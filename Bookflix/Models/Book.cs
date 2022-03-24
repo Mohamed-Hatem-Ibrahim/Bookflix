@@ -27,12 +27,12 @@ namespace Bookflix.Models
         [Required]
         public int StockNo { get; set; }
 
-        public ICollection<Category>?  Categories{ get; set; }
+        public virtual ICollection<Category>?  Categories{ get; set; }
 
 		public int PubID { get; set; }
-		public Publisher Publisher{ get; set; }
+		public virtual Publisher Publisher{ get; set; }
 
         public int AuthorID { get; set; }
-        public Author Author { get; set; }
+        public virtual Author Author { get; set; }
     }
 }

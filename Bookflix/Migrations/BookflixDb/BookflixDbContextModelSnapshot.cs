@@ -34,7 +34,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasIndex("CategoriesID");
 
-                    b.ToTable("BookCategory");
+                    b.ToTable("BookCategory", (string)null);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Author", b =>
@@ -56,7 +56,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Book", b =>
@@ -103,7 +103,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasIndex("PublisherID");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Category", b =>
@@ -121,7 +121,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Publisher", b =>
@@ -143,7 +143,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Publishers");
+                    b.ToTable("Publishers", (string)null);
                 });
 
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>
@@ -156,7 +156,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("BookISBN", "SellDate");
 
-                    b.ToTable("SoldBooks");
+                    b.ToTable("SoldBooks", (string)null);
                 });
 
             modelBuilder.Entity("BookCategory", b =>

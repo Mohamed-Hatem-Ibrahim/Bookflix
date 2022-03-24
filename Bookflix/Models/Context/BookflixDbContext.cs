@@ -7,11 +7,11 @@ namespace Bookflix.Models.Context
 		public BookflixDbContext(DbContextOptions<BookflixDbContext> options) : base(options)
 		{}
 
-		public DbSet<Book> Books { get; set; }
-		public DbSet<Publisher> Publishers { get; set; }
-		public DbSet<Author> Authors { get; set; }
-		public DbSet<Category> Categories { get; set; }
-		public DbSet<SoldBook> SoldBooks { get; set; }
+		public virtual DbSet<Book> Books { get; set; }
+		public virtual DbSet<Publisher> Publishers { get; set; }
+		public virtual DbSet<Author> Authors { get; set; }
+		public virtual DbSet<Category> Categories { get; set; }
+		public virtual DbSet<SoldBook> SoldBooks { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
