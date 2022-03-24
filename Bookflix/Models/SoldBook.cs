@@ -7,6 +7,6 @@ namespace Bookflix.Models
 		public int BookISBN { get; set; }
 		public virtual Book Book { get; set; }
 		[DataType(DataType.Date)]
-		public DateTime SellDate { get; set; }
+		public DateTime SellDate { get; set; } = DateTime.Now;
 	}
 }
