@@ -17,6 +17,7 @@ namespace Bookflix.Areas.Admin.Models
         {
            Author author = context.Authors.Find(authorID);
             context.Authors.Remove(author);
+            context.SaveChanges();
         }
 
         public Author GetDetails(int authorId)
@@ -32,16 +33,14 @@ namespace Bookflix.Areas.Admin.Models
         public void Insert(Author author)
         {
             context.Authors.Add(author);
-        }
-
-        public void Save()
-        {
             context.SaveChanges();
         }
+
 
         public void Update(int id, Author author)
         {
             context.Entry(author).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public bool Exists(int id)
