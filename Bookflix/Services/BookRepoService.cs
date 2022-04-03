@@ -6,7 +6,7 @@ namespace Bookflix.Services
 {
     public class BookRepoService : IRepository<Book>
     {
-        public BookflixDbContext Context { get; set; }
+        private readonly BookflixDbContext Context;
 
         public BookRepoService(BookflixDbContext context)
         {
@@ -18,21 +18,24 @@ namespace Bookflix.Services
             return Context.Books.Include(b => b.Publisher).Include(b1 => b1.Author).ToList();
         }
 
-        public Book GetDetails(int _isbn)
+        public Book? GetDetails(int? _isbn)
         {
             return Context.Books.Find(_isbn);
         }
 
-        public void Insert(Book book)
+        public void Insert(Book? book)
         {
+            if (book == null)
+                return;
             Context.Books.Add(book);
             Context.SaveChanges();
         }
 
-        public void Update(int id, Book book)
+        public void Update(int id, Book? book)
         {
-            Book bookUpdated = Context.Books.Find(id);
-
+            Book? bookUpdated = GetDetails(id);
+            if(bookUpdated == null || book == null)
+                return;
             bookUpdated.Description = book.Description;
             bookUpdated.PagesNo = book.PagesNo;
             bookUpdated.Title = book.Title;
@@ -46,7 +49,10 @@ namespace Bookflix.Services
 
         public void Delete(int id)
         {
-            Context.Remove(Context.Books.Find(id));
+            Book? book = GetDetails(id);
+            if (book == null)
+                return;
+            Context.Remove(book);
             Context.SaveChanges();
         }
 

@@ -23,7 +23,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRepository<Publisher>, PublisherRepoService>();
 builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
-builder.Services.AddScoped<IRepository<Author>, AuthorRepository>();
+builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
+builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
+builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
 
 
 var app = builder.Build();

@@ -8,48 +8,53 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bookflix.Models;
 using Bookflix.Models.Context;
+using Bookflix.Services;
 
 namespace Bookflix.Controllers
 {
     public class SoldBooksController : Controller
     {
-        private readonly BookflixDbContext _context;
+        private readonly SoldBookRepoService _bookSoldRepoService;
+        private readonly BookRepoService _bookRepoService;
+        //private readonly BookflixDbContext _context;
 
-        public SoldBooksController(BookflixDbContext context)
+        public SoldBooksController(SoldBookRepoService bookSoldRepoService, BookRepoService bookRepoService)
         {
-            _context = context;
+            _bookSoldRepoService = bookSoldRepoService;
+            _bookRepoService = bookRepoService;
         }
 
         // GET: SoldBooks
         public async Task<IActionResult> Index()
         {
-            var bookflixDbContext = _context.SoldBooks.Include(s => s.Book);
-            return View(await bookflixDbContext.ToListAsync());
+            //var bookflixDbContext = _context.SoldBooks.Include(s => s.Book);
+            return View(_bookSoldRepoService.GetAll());
         }
 
         // GET: SoldBooks/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var soldBook = await _context.SoldBooks
-                .Include(s => s.Book)
-                .FirstOrDefaultAsync(m => m.BookISBN == id);
-            if (soldBook == null)
-            {
-                return NotFound();
-            }
+        //    var soldBook = _bookSoldRepoService.GetDetails(id);
+        //        //await _context.SoldBooks
+        //        //.Include(s => s.Book)
+        //        //.FirstOrDefaultAsync(m => m.BookISBN == id);
+        //    if (soldBook == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(soldBook);
-        }
+        //    return View(soldBook);
+        //}
 
         // GET: SoldBooks/Create
         public IActionResult Create()
         {
-            ViewData["BookISBN"] = new SelectList(_context.Books, "ISBN", "Title");
+            ViewData["BookISBN"] = new SelectList(_bookRepoService.GetAll(), "ISBN", "Title");
             return View();
         }
 
@@ -62,11 +67,10 @@ namespace Bookflix.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(soldBook);
-                await _context.SaveChangesAsync();
+                _bookSoldRepoService.Insert(soldBook);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookISBN"] = new SelectList(_context.Books, "ISBN", "Title", soldBook.BookISBN);
+            ViewData["BookISBN"] = new SelectList(_bookRepoService.GetAll(), "ISBN", "Title", soldBook.BookISBN);
             return View(soldBook);
         }
 
@@ -124,38 +128,38 @@ namespace Bookflix.Controllers
         //}
 
         // GET: SoldBooks/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var soldBook = await _context.SoldBooks
-                .Include(s => s.Book)
-                .FirstOrDefaultAsync(m => m.BookISBN == id);
-            if (soldBook == null)
-            {
-                return NotFound();
-            }
+        //    var soldBook = await _context.SoldBooks
+        //        .Include(s => s.Book)
+        //        .FirstOrDefaultAsync(m => m.BookISBN == id);
+        //    if (soldBook == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(soldBook);
-        }
+        //    return View(soldBook);
+        //}
 
-        // POST: SoldBooks/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var soldBook = await _context.SoldBooks.FindAsync(id);
-            _context.SoldBooks.Remove(soldBook);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: SoldBooks/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var soldBook = await _context.SoldBooks.FindAsync(id);
+        //    _context.SoldBooks.Remove(soldBook);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private bool SoldBookExists(int id)
-        {
-            return _context.SoldBooks.Any(e => e.BookISBN == id);
-        }
+        //private bool SoldBookExists(int id)
+        //{
+        //    return _context.SoldBooks.Any(e => e.BookISBN == id);
+        //}
     }
 }

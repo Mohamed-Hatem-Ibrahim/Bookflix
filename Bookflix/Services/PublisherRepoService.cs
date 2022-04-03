@@ -5,7 +5,7 @@ namespace Bookflix.Services
 {
     public class PublisherRepoService: IRepository <Publisher>
     {
-        public BookflixDbContext Context { get; set; }
+        private readonly BookflixDbContext Context;
 
         public PublisherRepoService(BookflixDbContext context)
         {
@@ -17,20 +17,24 @@ namespace Bookflix.Services
             return Context.Publishers.ToList();
         }
 
-        public Publisher GetDetails(int id)
+        public Publisher? GetDetails(int? id)
         {
             return Context.Publishers.Find(id);
         }
 
-        public void Insert(Publisher pub)
+        public void Insert(Publisher? pub)
         {
+            if (pub == null)
+                return;
             Context.Publishers.Add(pub);
             Context.SaveChanges();
         }
 
-        public void Update(int id, Publisher pub)
+        public void Update(int id, Publisher? pub)
         {
-            Publisher pubUpdated = Context.Publishers.Find(id);
+            Publisher? pubUpdated = Context.Publishers.Find(id);
+            if (pubUpdated == null || pub == null)
+                return;
             pubUpdated.Name = pub.Name;
             pubUpdated.Address = pub.Address;
 
@@ -39,7 +43,10 @@ namespace Bookflix.Services
 
         public void Delete(int id)
         {
-            Context.Remove(Context.Publishers.Find(id));
+            Publisher? publisher = GetDetails(id);
+            if (publisher == null)
+                return;
+            Context.Remove(publisher);
             Context.SaveChanges();
         }
 

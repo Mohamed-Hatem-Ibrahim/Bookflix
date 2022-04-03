@@ -5,22 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Areas.Admin.Models
 {
-    public class AuthorRepository : IRepository<Author>
+    public class AuthorRepoService : IRepository<Author>
     {
         private BookflixDbContext context;
 
-        public AuthorRepository(BookflixDbContext context)
+        public AuthorRepoService(BookflixDbContext context)
         {
             this.context = context;
         }
         public void Delete(int authorID)
         {
-           Author author = context.Authors.Find(authorID);
+           Author? author = context.Authors.Find(authorID);
+            if(author == null)
+                return;
             context.Authors.Remove(author);
             context.SaveChanges();
         }
 
-        public Author GetDetails(int authorId)
+        public Author? GetDetails(int? authorId)
         {
             return context.Authors.Find(authorId);
         }
@@ -30,15 +32,19 @@ namespace Bookflix.Areas.Admin.Models
             return context.Authors.ToList();
         }
 
-        public void Insert(Author author)
+        public void Insert(Author? author)
         {
+            if(author == null)
+                return ;
             context.Authors.Add(author);
             context.SaveChanges();
         }
 
 
-        public void Update(int id, Author author)
+        public void Update(int id, Author? author)
         {
+            if(author == null)
+                return ;
             context.Entry(author).State = EntityState.Modified;
             context.SaveChanges();
         }
