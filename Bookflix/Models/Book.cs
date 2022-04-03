@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookflix.Models
 {
@@ -24,6 +26,13 @@ namespace Bookflix.Models
 
         [Required]
         public int PagesNo { get; set; }
+
+        [DisplayName("Book Image")]
+        public string ImageName { get; set; }
+
+        [NotMapped]
+        [DisplayName("Uploade Image")]
+        public IFormFile ImageFile { get; set; }
 
         [Required]
         public int StockNo { get; set; }
