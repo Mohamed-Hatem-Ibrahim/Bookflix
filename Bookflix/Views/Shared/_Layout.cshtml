@@ -186,12 +186,15 @@
 			<div class="row mt-5">
 				<div class="col-md-12 text-center">
 					<p>
-
 						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://therichpost.com" target="_blank">therichpost</a>, distributed by <a href="https://therichpost.com/" target="_blank">therichpost</a>
 					</p>
 				</div>
 			</div>
 		</div>
 	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

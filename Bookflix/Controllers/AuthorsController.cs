@@ -1,17 +1,18 @@
 ﻿using Bookflix.Areas.Admin.Models;
 using Bookflix.Models;
+using Bookflix.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookflix.Areas.Admin.Controllers
 {
-    [Area("admin")]
-    [Route("admin/home")]
+    //[Area("admin")]
+    //[Route("admin/home")]
 
     public class AuthorsController : Controller
     {
-        private IAuthorRepository Repository;
-        public AuthorsController(IAuthorRepository repo)
+        public IRepository<Author> Repository;
+        public AuthorsController(IRepository<Author> repo)
         {
             Repository = repo;
         }
@@ -19,14 +20,14 @@ namespace Bookflix.Areas.Admin.Controllers
         [Route("index")]
         public ActionResult Index()
         {
-            return View(Repository.GetAuthors());
+            return View(Repository.GetAll());
         }
 
         // GET: AuthorsController/Details/5
         [Route("Details")]
         public ActionResult Details(int id)
         {
-            Author author = Repository.GetAuthorByID(id);
+            Author author = Repository.GetDetails(id);
             return View(author);
         }
 
@@ -46,8 +47,7 @@ namespace Bookflix.Areas.Admin.Controllers
         {
             try
             {
-                Repository.InsertAuthor(author);
-                Repository.Save();
+                Repository.Insert(author);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -60,7 +60,7 @@ namespace Bookflix.Areas.Admin.Controllers
         [Route("Edit")]
         public ActionResult Edit(int id)
         {
-            Author author = Repository.GetAuthorByID(id);
+            Author author = Repository.GetDetails(id);
             return View(author);
         }
 
@@ -72,8 +72,7 @@ namespace Bookflix.Areas.Admin.Controllers
         {
             try
             {
-                Repository.UpdateAuthor(author);
-                Repository.Save();
+                Repository.Update(id, author);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -86,7 +85,7 @@ namespace Bookflix.Areas.Admin.Controllers
         [Route("Delete")]
         public ActionResult Delete(int id)
         {
-            Author author = Repository.GetAuthorByID(id);
+            Author author = Repository.GetDetails(id);
             return View(author);
         }
 
@@ -98,8 +97,7 @@ namespace Bookflix.Areas.Admin.Controllers
         {
             try
             {
-                Repository.DeleteAuthor(id);
-                Repository.Save();
+                Repository.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

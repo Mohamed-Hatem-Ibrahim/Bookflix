@@ -14,9 +14,9 @@ namespace Bookflix.Controllers
 {
     public class PublishersController : Controller
     {
-        public IPublisherRepository PublisherRepository { get; set; }
+        public IRepository<Publisher> PublisherRepository { get; set; }
 
-        public PublishersController(IPublisherRepository publisherRepository)
+        public PublishersController(IRepository<Publisher> publisherRepository)
         {
             PublisherRepository = publisherRepository;
         }
@@ -72,7 +72,7 @@ namespace Bookflix.Controllers
         {
             try
             {
-                PublisherRepository.UpdatePub(id, pub);
+                PublisherRepository.Update(id, pub);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -94,7 +94,7 @@ namespace Bookflix.Controllers
         {
             try
             {
-                PublisherRepository.DeletePub(id);
+                PublisherRepository.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

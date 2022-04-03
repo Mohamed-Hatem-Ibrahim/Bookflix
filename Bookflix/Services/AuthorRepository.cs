@@ -1,10 +1,11 @@
 ﻿using Bookflix.Models;
 using Bookflix.Models.Context;
+using Bookflix.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Areas.Admin.Models
 {
-    public class AuthorRepository : IAuthorRepository
+    public class AuthorRepository : IRepository<Author>
     {
         private BookflixDbContext context;
 
@@ -12,23 +13,23 @@ namespace Bookflix.Areas.Admin.Models
         {
             this.context = context;
         }
-        public void DeleteAuthor(int authorID)
+        public void Delete(int authorID)
         {
            Author author = context.Authors.Find(authorID);
             context.Authors.Remove(author);
         }
 
-        public Author GetAuthorByID(int authorId)
+        public Author GetDetails(int authorId)
         {
             return context.Authors.Find(authorId);
         }
 
-        public IEnumerable<Author> GetAuthors()
+        public List<Author> GetAll()
         {
             return context.Authors.ToList();
         }
 
-        public void InsertAuthor(Author author)
+        public void Insert(Author author)
         {
             context.Authors.Add(author);
         }
@@ -38,9 +39,14 @@ namespace Bookflix.Areas.Admin.Models
             context.SaveChanges();
         }
 
-        public void UpdateAuthor(Author author)
+        public void Update(int id, Author author)
         {
             context.Entry(author).State = EntityState.Modified;
+        }
+
+        public bool Exists(int id)
+        {
+            return context.Authors.Any(a => a.ID == id);
         }
     }
 }

@@ -27,22 +27,20 @@ namespace Bookflix.Models
         [Required]
         public int PagesNo { get; set; }
 
-        [DisplayName("Book Image")]
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
 
         [NotMapped]
-        [DisplayName("Uploade Image")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [Required]
         public int StockNo { get; set; }
 
         public virtual ICollection<Category>?  Categories{ get; set; }
 
-		public int PubID { get; set; }
-		public virtual Publisher Publisher{ get; set; }
+		public int PublisherID { get; set; }
+		public virtual Publisher? Publisher { get; set; }
 
         public int AuthorID { get; set; }
-        public virtual Author Author { get; set; }
+        public virtual Author? Author { get; set; }
     }
 }

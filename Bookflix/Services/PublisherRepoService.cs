@@ -3,7 +3,7 @@ using Bookflix.Models.Context;
 
 namespace Bookflix.Services
 {
-    public class PublisherRepoService: IPublisherRepository
+    public class PublisherRepoService: IRepository <Publisher>
     {
         public BookflixDbContext Context { get; set; }
 
@@ -28,7 +28,7 @@ namespace Bookflix.Services
             Context.SaveChanges();
         }
 
-        public void UpdatePub(int id, Publisher pub)
+        public void Update(int id, Publisher pub)
         {
             Publisher pubUpdated = Context.Publishers.Find(id);
             pubUpdated.Name = pub.Name;
@@ -37,10 +37,15 @@ namespace Bookflix.Services
             Context.SaveChanges();
         }
 
-        public void DeletePub(int id)
+        public void Delete(int id)
         {
             Context.Remove(Context.Publishers.Find(id));
             Context.SaveChanges();
+        }
+
+        public bool Exists(int id)
+        {
+            return Context.Publishers.Any(p => p.ID == id);
         }
     }
 }

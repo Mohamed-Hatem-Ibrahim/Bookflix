@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Bookflix.Models.Book>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="text-center" style="color:#252525;">Books</h1>
+			<p>
+				<a class="text-center d-block" style="color:#858585" asp-action="Create">Create New</a>
+			</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Description)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.PublicationYear)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Price)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.PagesNo)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ImageName)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.StockNo)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Publisher)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Author)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Title)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Description)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.PublicationYear)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Price)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.PagesNo)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.ImageName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.StockNo)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Publisher.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Author.Name)
+							</td>
+							<td>
+								<a class="text-center d-block" style="color:#858585" asp-action="Edit" asp-route-id="@item.ISBN">Edit</a> |
+								<a class="text-center d-block" style="color:#858585" asp-action="Details" asp-route-id="@item.ISBN">Details</a> |
+								<a class="text-center d-block" style="color:#858585" asp-action="Delete" asp-route-id="@item.ISBN">Delete</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

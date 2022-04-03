@@ -2,7 +2,7 @@
 
 namespace Bookflix.Areas.Admin.Models
 {
-    public interface IAuthorRepository
+    public interface Irepository
     {
         IEnumerable<Author> GetAuthors();
         Author GetAuthorByID(int authorId);

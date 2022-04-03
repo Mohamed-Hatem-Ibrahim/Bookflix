@@ -4,6 +4,7 @@ using Bookflix.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations.BookflixDb
 {
     [DbContext(typeof(BookflixDbContext))]
-    partial class BookflixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220403180102_allowNullInImage")]
+    partial class allowNullInImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,10 +85,13 @@ namespace Bookflix.Migrations.BookflixDb
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int>("PubID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PublicationYear")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PublisherID")
+                    b.Property<int?>("PublisherID")
                         .HasColumnType("int");
 
                     b.Property<int>("StockNo")
@@ -184,9 +189,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasOne("Bookflix.Models.Publisher", "Publisher")
                         .WithMany("Books")
-                        .HasForeignKey("PublisherID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublisherID");
 
                     b.Navigation("Author");
 

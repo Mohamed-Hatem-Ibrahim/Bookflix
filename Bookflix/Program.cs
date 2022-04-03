@@ -21,9 +21,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IPublisherRepository, PublisherRepoService>();
+builder.Services.AddScoped<IRepository<Publisher>, PublisherRepoService>();
+builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
+builder.Services.AddScoped<IRepository<Author>, AuthorRepository>();
 
-builder.Services.AddScoped<IAuthorRepository,AuthorRepository>();
 
 var app = builder.Build();
 
