@@ -1,6 +1,8 @@
+using Bookflix.Areas.Admin.Models;
 using Bookflix.Data;
 using Bookflix.Models;
 using Bookflix.Models.Context;
+using Bookflix.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,10 @@ builder.Services.AddDbContext<BookflixDbContext>(options => options.UseSqlServer
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IPublisherRepository, PublisherRepoService>();
+
+builder.Services.AddScoped<IAuthorRepository,AuthorRepository>();
 
 var app = builder.Build();
 
@@ -40,6 +46,28 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+/*app.MapControllerRoute(name:"author",
+    pattern: "{area:exists}/{controller=Authors}/{action=Index}/{id?}");*/
+
+/*app.UseEndpoints(endpoints =>
+{
+
+endpoints.MapAreaControllerRoute(
+    name: "Authors",
+    areaName: "Admin",
+    pattern: "Author/{controller=Authors}/{action=Index}"
+);
+
+
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Authors}/{action=Index}/{id?}"
+    );
+});
+*/
+
 
 app.MapControllerRoute(
     name: "default",
