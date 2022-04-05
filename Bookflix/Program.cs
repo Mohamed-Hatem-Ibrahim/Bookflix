@@ -27,6 +27,7 @@ builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
 
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -50,7 +51,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.UseSession();
 /*app.MapControllerRoute(name:"author",
     pattern: "{area:exists}/{controller=Authors}/{action=Index}/{id?}");*/
 

@@ -15,7 +15,7 @@ namespace Bookflix.Services
 
         public List<Book> GetAll()
         {
-            return Context.Books.Include(b => b.Publisher).Include(b1 => b1.Author).ToList();
+            return Context.Books.Include(p => p.Publisher).Include(a => a.Author).Include(c => c.Categories).ToList();
         }
 
         public Book? GetDetails(int? _isbn)
