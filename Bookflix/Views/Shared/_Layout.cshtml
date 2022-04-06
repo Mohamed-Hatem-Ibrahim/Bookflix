@@ -113,15 +113,19 @@
 				<div class="user-login-info" style="width: 200px">
 					<partial name="_LoginPartial.cshtml" />
 				</div>
+					<a href="#" id="essenceCartBtn"><img src="/img/core-img/bag.svg" alt=""> <span>3</span></a>
+				</div>
+			@await Component.InvokeAsync("ShoppingCartCount")
 			</div>
-		</div>
-	</header>
 	<div class="container-fluid mt-100">
-		<main role="main" class="pb-3">
-			@RenderBody()
-		</main>
-	</div>
-
+        <main role="main" class="pb-3">
+		@await Component.InvokeAsync("ShoppingCartSummary")
+            @RenderBody()
+        </main>
+    </div>
+	
+    </div>
+	
 
 
 	<footer class="footer_area clearfix">
