@@ -18,5 +18,8 @@ namespace Bookflix.Models.Context
 			modelBuilder.Entity<SoldBook>().HasKey(x => new { x.BookISBN, x.SellDate });
 			base.OnModelCreating(modelBuilder);
 		}
+
+/*		public virtual DbSet<Order> Orders { get; set; }
+		public virtual DbSet<OrderItem> OrderItems { get; set; }*/
 	}
 }

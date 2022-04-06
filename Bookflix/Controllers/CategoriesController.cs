@@ -14,10 +14,10 @@ namespace Bookflix.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly CategoryRepoService _categoryRepoService;
+        private readonly IRepository<Category> _categoryRepoService;
         //private readonly BookflixDbContext _context;
 
-        public CategoriesController(CategoryRepoService categoryRepoService)
+        public CategoriesController(IRepository<Category> categoryRepoService)
         {
             _categoryRepoService = categoryRepoService;
         }

@@ -46,6 +46,7 @@ builder.Services.AddAuthentication()
         googleOptions.ClientSecret = "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";
     });
 
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -72,7 +73,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.UseSession();
 /*app.MapControllerRoute(name:"author",
     pattern: "{area:exists}/{controller=Authors}/{action=Index}/{id?}");*/
 
