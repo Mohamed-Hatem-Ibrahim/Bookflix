@@ -13,8 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
@@ -35,12 +36,20 @@ builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddTransient<IMailService, MailService>();
 //?????????????????
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Register", "/Register");
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
 });
+
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = "326458263064-naitolbohbeqgt0sv623ud7upccjad57.apps.googleusercontent.com";
+        googleOptions.ClientSecret = "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";
+    });
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShopingCart(sc));
@@ -125,7 +134,7 @@ async Task SeedDatabaseAsync() //can be placed at the very bottom under app.Run(
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             await ContextSeed.SeedRolesAsync(userManager, roleManager);
-            await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);    
+            await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
         }
         catch (Exception ex)
         {

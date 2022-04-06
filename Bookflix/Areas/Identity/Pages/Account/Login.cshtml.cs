@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Bookflix.Models;
 using System.Net.Mail;
+using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text.Encodings.Web;
 
 namespace Bookflix.Areas.Identity.Pages.Account
 {
@@ -25,11 +28,15 @@ namespace Bookflix.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
+        public LoginModel(
+            SignInManager<ApplicationUser> signInManager, 
+            ILogger<LoginModel> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+
         }
 
         /// <summary>
@@ -140,6 +147,30 @@ namespace Bookflix.Areas.Identity.Pages.Account
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                #region Tried to Add Confirm Email
+                //var me = await _signInManager.UserManager.FindByNameAsync(userName);
+                //var result2 = await _userManager.IsEmailConfirmedAsync(me);
+                //if(result2 == false)
+                //{
+                //    ModelState.AddModelError(string.Empty, "Invalid login attempt. Please confirm your e-mail.");
+
+                //    var userId = await _userManager.GetUserIdAsync(me);
+                //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(me);
+                //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                //    var callbackUrl = Url.Page(
+                //        "/Account/ConfirmEmail",
+                //        pageHandler: null,
+                //        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                //        protocol: Request.Scheme);
+
+                //    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                //        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                //    return Page();
+                //}
+                #endregion
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
