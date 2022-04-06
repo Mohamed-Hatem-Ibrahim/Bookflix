@@ -11,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
 builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
+builder.Services.AddTransient<IMailService, MailService>();
 //?????????????????
 builder.Services.AddRazorPages(options =>
 {
@@ -127,7 +129,7 @@ async Task SeedDatabaseAsync() //can be placed at the very bottom under app.Run(
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             await ContextSeed.SeedRolesAsync(userManager, roleManager);
-            await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);    
+            await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
         }
         catch (Exception ex)
         {
