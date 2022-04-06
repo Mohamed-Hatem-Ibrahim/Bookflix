@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Bookflix.Models;
+using System.Net.Mail;
 
 namespace Bookflix.Areas.Identity.Pages.Account
 {
@@ -85,6 +86,14 @@ namespace Bookflix.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
         
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -152,9 +161,18 @@ namespace Bookflix.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                //var user = CreateUser();
+                MailAddress address = new MailAddress(Input.Email);
+                string userName = address.User;
+                var user = new ApplicationUser
+                {
+                    UserName = userName,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                };
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, address.User, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user);

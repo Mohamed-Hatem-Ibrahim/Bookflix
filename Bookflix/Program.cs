@@ -39,6 +39,13 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
 });
 
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = "326458263064-naitolbohbeqgt0sv623ud7upccjad57.apps.googleusercontent.com";
+        googleOptions.ClientSecret = "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";
+    });
+
 
 var app = builder.Build();
 
