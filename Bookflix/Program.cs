@@ -1,8 +1,10 @@
 using Bookflix.Areas.Admin.Models;
 using Bookflix.Data;
+using Bookflix.Data.Cart;
 using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
+using Bookflix.Services.Orders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
 builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 //?????????????????
 builder.Services.AddRazorPages(options =>
 {
@@ -39,6 +42,8 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
 });
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShopingCart(sc));
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -62,11 +67,11 @@ await SeedDatabaseAsync();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession();
 /*app.MapControllerRoute(name:"author",
     pattern: "{area:exists}/{controller=Authors}/{action=Index}/{id?}");*/
 

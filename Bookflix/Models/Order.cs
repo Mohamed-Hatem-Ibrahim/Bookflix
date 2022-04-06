@@ -10,6 +10,6 @@ namespace Bookflix.Models
         public string UserId { get; set; }
 
 
-        public List<OrderItem> Items { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
     }
 }

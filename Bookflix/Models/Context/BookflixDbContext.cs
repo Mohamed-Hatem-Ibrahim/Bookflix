@@ -19,7 +19,9 @@ namespace Bookflix.Models.Context
 			base.OnModelCreating(modelBuilder);
 		}
 
-/*		public virtual DbSet<Order> Orders { get; set; }
-		public virtual DbSet<OrderItem> OrderItems { get; set; }*/
-	}
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+
+		public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+    }
 }

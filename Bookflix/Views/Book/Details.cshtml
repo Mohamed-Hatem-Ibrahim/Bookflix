@@ -69,4 +69,9 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ISBN">Edit</a> |
     <a asp-action="Index">Back to List</a>
+     <a class="btn essence-btn @((DateTime.Now > @Model.PublicationYear) ? "disabled" : "")" 
+                                   asp-controller="Orders" 
+                                   asp-action="AddToShoppingCart" 
+                                   asp-route-id="@Model.ISBN">
+                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))</a>
 </div>

@@ -3,7 +3,7 @@
 }
 
 <!-- ##### Right Side Cart Area ##### -->
-<div class="cart-bg-overlay"></div>
+@*<div class="cart-bg-overlay"></div>
 <div class="right-side-cart-area">
     <!-- Cart Button -->
     <div class="cart-button">
@@ -59,6 +59,7 @@
             </div>
         </div>
         <!-- Cart Summary -->
+        @await Component.InvokeAsync("ShoppingCartSummary")
         <div class="cart-amount-summary">
             <h2>Summary</h2>
             <ul class="summary-table">
@@ -72,7 +73,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <!-- ##### Right Side Cart End ##### -->
 <!-- ##### Welcome Area Start ##### -->
 <section class="welcome_area bg-img background-overlay" style="background-image: url(/img/bg-img/bg-1.jpg);">

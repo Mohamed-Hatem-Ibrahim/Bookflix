@@ -1,0 +1,92 @@
+﻿@using Bookflix.Data.ViewModels
+@model ShoppingCartVM
+
+@* @foreach(var item in Model) {
+    <tr>
+    <td class="align-middle">@item.Amount</td>
+    <td class="align-middle">@item.Book.Title</td>
+    <td class="align-middle">@item.Book.Price.ToString("c")</td>
+    <td class="align-middle">@((item.Amount* item.Book.Price).ToString("c"))</td>
+    <td class="align-middle">
+    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
+    asp-route-id="@item.Book.ISBN"><i class="bi bi-cart-dash"></i> </a>
+    <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
+    asp-route-id="@item.Book.ISBN"><i class="bi bi-cart-plus"></i> </a>
+    </td>
+    </tr>
+    }*@
+
+<div class="cart-bg-overlay"></div>
+<div class="right-side-cart-area">
+    <!-- Cart Button -->
+    <div class="cart-button">
+        <a href="#" id="rightSideCart"><img src="/img/core-img/bag.svg" alt=""> <span>@Model.ShopingCart.shoppingCartItems.Count</span></a>
+    </div>
+    <div class="cart-content d-flex">
+        <!-- Cart List Area -->
+        <div class="cart-list">
+            @foreach (var item in Model.ShopingCart.shoppingCartItems)
+            {
+            <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                    <a href="#" class="product-image">
+                        <img src="@("~/img/books-img/"+item.Book.ImageName)" class="cart-thumb" alt="" asp-append-version="true">
+                        <!-- Cart Item Desc -->
+                    <div class="cart-item-desc">
+                            <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                            <span class="badge">@item.Book.Title</span>
+                            <h6>@item.Book.Description</h6>
+                            @*<p class="size">Size: S</p>*@
+                            @*<p class="color">Color: Red</p>*@
+                            <p class="price">@item.Book.Price.ToString("c")</p>
+                            <p class="price">@((item.Amount* item.Book.Price).ToString("c"))</p>
+                        </div>
+                    </a>
+                </div>
+            }
+            @*            <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                <a href="#" class="product-image">
+                <img src="/img/product-img/product-2.jpg" class="cart-thumb" alt="">
+                <!-- Cart Item Desc -->
+                <div class="cart-item-desc">
+                <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                <span class="badge">Mango</span>
+                <h6>Button Through Strap Mini Dress</h6>
+                <p class="size">Size: S</p>
+                <p class="color">Color: Red</p>
+                <p class="price">$45.00</p>
+                </div>
+                </a>
+                </div>
+                <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                <a href="#" class="product-image">
+                <img src="/img/product-img/product-3.jpg" class="cart-thumb" alt="">
+                <!-- Cart Item Desc -->
+                <div class="cart-item-desc">
+                <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                <span class="badge">Mango</span>
+                <h6>Button Through Strap Mini Dress</h6>
+                <p class="size">Size: S</p>
+                <p class="color">Color: Red</p>
+                <p class="price">$45.00</p>
+                </div>
+                </a>
+                </div>*@
+        </div>
+        <!-- Cart Summary -->
+        <div class="cart-amount-summary">
+            <h2>Summary</h2>
+            <ul class="summary-table">
+                <li><span>subtotal:</span> <span>@Model.ShoppingCartTotal.ToString("c")</span></li>
+                <li><span>delivery:</span> <span>Free</span></li>
+                <li><span>discount:</span> <span>0%</span></li>
+                <li><span>total:</span> <span>@Model.ShoppingCartTotal.ToString("c")</span></li>
+            </ul>
+            <div class="checkout-btn mt-100">
+                <a href="#" class="btn essence-btn">check out</a>
+            </div>
+        </div>
+    </div>
+</div>

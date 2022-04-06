@@ -4,6 +4,7 @@ using Bookflix.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations.BookflixDb
 {
     [DbContext(typeof(BookflixDbContext))]
-    partial class BookflixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405183128_order")]
+    partial class order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,31 +198,6 @@ namespace Bookflix.Migrations.BookflixDb
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("Bookflix.Models.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookISBN")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShoppingCartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookISBN");
-
-                    b.ToTable("ShoppingCartItems");
-                });
-
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>
                 {
                     b.Property<int>("BookISBN")
@@ -285,17 +262,6 @@ namespace Bookflix.Migrations.BookflixDb
                     b.Navigation("Book");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("Bookflix.Models.ShoppingCartItem", b =>
-                {
-                    b.HasOne("Bookflix.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookISBN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>

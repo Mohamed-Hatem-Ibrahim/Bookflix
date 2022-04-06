@@ -4,6 +4,7 @@ using Bookflix.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations.BookflixDb
 {
     [DbContext(typeof(BookflixDbContext))]
-    partial class BookflixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405184129_shopingCartItem_added")]
+    partial class shopingCartItem_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
