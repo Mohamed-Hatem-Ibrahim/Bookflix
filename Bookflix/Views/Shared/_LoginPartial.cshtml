@@ -9,9 +9,8 @@
 			@*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>*@
 		<li>
 			<!-- Cart Area -->
-		<div class="cart-area">
-				<a href="#" id="essenceCartBtn"><img src="/img/core-img/bag.svg" alt=""> <span>3</span></a>
-			</div>
+
+			@await Component.InvokeAsync("ShoppingCartCount")
 		</li>
 		<li class="nav-item">
 		</li>

@@ -48,11 +48,14 @@
                 </tfoot>
             </table>
 
-            <div class="text-center">
+            <div class="text-right">
                 <div class="btn-group">
-                    <a class="btn btn-outline-success" asp-action="CompleteOrder">
-
-                    </a>
+@*                    <a class="btn btn-outline-success" asp-action="CompleteOrder">
+                        Complete Order
+                    </a>*@
+                    <div id="paypal-btn">
+                    <span style="padding:50px"></span>
+                    </div>
                     <a class="btn btn-outline-success" asp-controller="Book" asp-action="Index">
                         Add more items
                     </a>
@@ -61,3 +64,101 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    <script src="https://www.paypalobjects.com/api/checkout.js">
+        </script>
+    <script>
+        let total = @Html.Raw(@Model.ShoppingCartTotal);
+
+
+        paypal.Button.render({
+        env:"sandbox",
+        client:{
+            sandbox:"ATIHFvCIzYJmX2nJh7PRg_hkqOFl9rbUzarRDIF1YZ5NzJ6HAEIdvf3xJz05B_3_KFbq_9NnC6QfLpcp"
+        },
+        locale:"en_US",
+        style:{
+            size:'small',
+            color:'gold',
+            shape:'pill'
+        },
+        commit:true,
+        payment:function(data,actions){
+            return actions.payment.create({
+                transactions :[{
+                    amount:{
+                        total: total,
+                        currency:'USD'
+                    }
+                }]
+            });
+        },
+        onAuthorize:function(data,actions){
+            return actions.payment.execute().then(function(){
+            var url ='@Url.Action("CompleteOrder","Orders",new{})';
+            window.location.href = url;
+            })
+        }
+        },'#paypal-btn');
+    </script>
+
+  @*  <script>
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+            sandbox: 'ATIHFvCIzYJmX2nJh7PRg_hkqOFl9rbUzarRDIF1YZ5NzJ6HAEIdvf3xJz05B_3_KFbq_9NnC6QfLpcp',
+            },
+            // Customize button (optional)
+            locale: 'en_US',
+            style: {
+                layout: "horizontal",
+                color: "black",
+                shape: "rect",
+                label: "paypal",
+                tagline: false,
+                height: 40,
+            },
+            // Enable Pay Now checkout flow (optional)
+            commit: true,
+            // Set up a payment
+            payment: function(data, actions) {
+            return actions.payment.create({
+                transactions: [{
+                amount: {
+                    total: @Model.ShoppingCartTotal.ToString(),
+                    currency: 'USD',
+                }
+                }]
+            });
+            },
+            // Execute the payment
+            onAuthorize: function(data, actions) {
+            return actions.payment.execute().then(function() {
+
+                let city = $('#address-city').val();
+                let street = $('#address-street').val();
+                let streetnumber = $('#address-streetnumber').val();
+                let floornumber = $('#address-floornumber').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "FinalizeOrder",
+                    data: {
+                        City: city,
+                        Street: street,
+                        StreetNumber: parseInt( streetnumber),
+                        FloorNumber: parseInt(floornumber),
+                    },
+                    success: function(resultData){
+                        var url = '@Url.Action("ShoppingCart", "Orders", new { })';
+                        window.location.href = url;
+                    },
+                });
+            });
+            }
+        }, '#paypal-btn');
+    </script>*@
+}

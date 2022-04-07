@@ -4,6 +4,7 @@ using Bookflix.Models;
 using Bookflix.Services;
 using Bookflix.Services.Orders;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Bookflix.Controllers
 {
@@ -56,12 +57,20 @@ namespace Bookflix.Controllers
         public async Task  <IActionResult> CompleteOrder()
         {
             var items = shoppingCart.GetShoppingCartItems();
-            string userId = "";
-            string userEmailAddress = "";
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await orderService.StoreOrderAsync(items, userId, userEmailAddress);
             await shoppingCart.ClearShoppingAsync();
             return View("OrderCompleted");
+        }
+
+        public async Task <IActionResult> Index()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            var orders =await orderService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
+            return View(orders);
         }
     }
 }

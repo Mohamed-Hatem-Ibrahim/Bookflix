@@ -12,10 +12,18 @@ namespace Bookflix.Services.Orders
         {
             _dbContext = dbContext;
         }
-        public Task<List<Order>> GetOrdersByUserIdAsync(string UserId)
+        public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string UserId,string userRole)
         {
-            return _dbContext.Orders.Include(n=> n.OrderItems).ThenInclude(n=>n.Book).Where(n=>n.UserId == UserId)
+            var orders = await _dbContext.Orders.Include(n=> n.OrderItems).ThenInclude(n=>n.Book)
                 .ToListAsync();
+
+
+            if(userRole != "Admin")
+            {
+                orders = orders.Where(i =>i.UserId == UserId).ToList();
+
+            }
+            return orders;
         }
 
         public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
