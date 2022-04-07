@@ -50,9 +50,9 @@
 							<span class="data"><b>Publisher Year:</b> @item.PublicationYear.Day/@item.PublicationYear.Month/@item.PublicationYear.Year </span>
 							<span class="data">
 								<b>Categories:</b>
-								@for (var i = 0; i < item.Categories.Count; i++)
+								@for (var i = 0; i < item?.Categories.Count; i++)
 								{
-									<span style="padding:5px; font-size:10px; border: 1px solid black; border-radius:10px;">@item.Categories.ToList()[i].Name</span>
+									<span style="padding:5px; font-size:10px; border: 1px solid black; border-radius:10px;">@item.Categories.ToList()[i]</span>
 								}
 							</span>
 							<span class="data"><b>Pages:</b> @item.PagesNo </span>

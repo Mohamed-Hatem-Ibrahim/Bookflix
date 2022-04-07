@@ -35,7 +35,8 @@ namespace Bookflix.Models
         [Required]
         public int StockNo { get; set; }
 
-        public virtual ICollection<Category>?  Categories{ get; set; }
+        //[InverseProperty(nameof(BookCategory.Category))]
+        public virtual ICollection<BookCategory>?  Categories{ get; set; }
 
 		public int PublisherID { get; set; }
 		public virtual Publisher? Publisher { get; set; }
