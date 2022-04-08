@@ -17,13 +17,17 @@ namespace Bookflix.Controllers
         public IRepository<Book> BookRepo { get; set; }
         public IRepository<Author> AuthorRepo { get; set; }
         public IRepository<Publisher> PubliserRepo { get; }
+        private readonly IRepository<BookCategory> BookCateRepo;
+        private readonly IRepository<Category> CategoryRepo;
         public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public BooksController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IWebHostEnvironment webHostEnvironment)
+        public BooksController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IRepository<BookCategory> bookCateRepo, IRepository<Category> categoryRepo, IWebHostEnvironment webHostEnvironment)
         {
             BookRepo = _BookRepo;
             AuthorRepo = authorRepo;
             PubliserRepo = publiserRepo;
+            CategoryRepo = categoryRepo;
+            BookCateRepo = bookCateRepo;
             WebHostEnvironment = webHostEnvironment;
         }
 
@@ -55,6 +59,17 @@ namespace Bookflix.Controllers
         {
             ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name");
             ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name");
+            var Categories = new List<SelectListItem>();
+            foreach(var item in CategoryRepo.GetAll())
+            {
+                Categories.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    
+                });
+            }
+            ViewData["CategoryIDs"] = Categories;
             return View();
         }
 
@@ -63,26 +78,42 @@ namespace Bookflix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageFile,StockNo,PublisherID,AuthorID")] Book book)
+        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageFile,StockNo,PublisherID,AuthorID")] Book book, string[] cats)
         {
             if (ModelState.IsValid)
             {
                 string wwwRootPath = WebHostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(book.ImageFile.FileName);
-                string extention = Path.GetExtension(book.ImageFile.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(book.ImageFile?.FileName);
+                string extention = Path.GetExtension(book.ImageFile?.FileName);
                 book.ImageName = fileName = fileName + book.ISBN.ToString() + extention;
                 string path = Path.Combine(wwwRootPath + "/img/books-img/", fileName);
-
                 using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
                     await book.ImageFile.CopyToAsync(fs);
                 }
 
                 BookRepo.Insert(book);
+
+                foreach (var c in cats)
+                {
+                    var temp = new BookCategory { ISBN = book.ISBN, CategoryID = int.Parse(c) };
+                    BookCateRepo.Insert(temp);
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
             ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
+            var Categories = new List<SelectListItem>();
+            foreach (var item in CategoryRepo.GetAll())
+            {
+                Categories.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = cats.Any(x=>x==item.ID.ToString())
+                });
+            }
+            ViewData["CategoryIDs"] = Categories;
             return View(book);
         }
 

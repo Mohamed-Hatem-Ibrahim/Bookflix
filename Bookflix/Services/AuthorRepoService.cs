@@ -53,5 +53,10 @@ namespace Bookflix.Areas.Admin.Models
         {
             return context.Authors.Any(a => a.ID == id);
         }
+
+        public void DeleteComposite(int id1, int id2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

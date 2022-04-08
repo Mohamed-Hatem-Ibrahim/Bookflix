@@ -20,6 +20,11 @@ namespace Bookflix.Services
             Context.SaveChanges();
         }
 
+        public void DeleteComposite(int id1, int id2)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Exists(int id)
         {
             return Context.Categories.Any(e => e.ID == id);

@@ -54,5 +54,10 @@ namespace Bookflix.Services
         {
             return Context.Publishers.Any(p => p.ID == id);
         }
+
+        public void DeleteComposite(int id1, int id2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace Bookflix.Services
         public void Update(int id, T? t);
         public void Delete(int id);
         public bool Exists (int id);
+        public void DeleteComposite(int id1, int id2);
     }
 }

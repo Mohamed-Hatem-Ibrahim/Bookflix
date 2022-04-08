@@ -15,7 +15,6 @@ namespace Bookflix.Models.Context
 		public virtual DbSet<BookCategory> BookCategories { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
-		public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

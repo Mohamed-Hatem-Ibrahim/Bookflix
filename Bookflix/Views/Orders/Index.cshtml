@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "All arders";
+    var users = (List<ApplicationUser>)ViewBag.users;
 }
 
 <div class="row">
@@ -45,7 +46,7 @@
                         <td class="align-middle">@order.OrderItems.Select(m=> m.Price * m.Amount).Sum().ToString("c")</td>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
-                            <td class="align-middle">@order.User.FirstName</td>
+                            <td class="align-middle">@users.FirstOrDefault(i=> i.Id == order.UserId)?.FirstName</td>
                         }
                     </tr>
                 }

@@ -36,6 +36,7 @@ builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
 builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
+builder.Services.AddScoped<IRepository<BookCategory>, BookCategoriesRepoService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddTransient<IMailService, MailService>();
 
@@ -52,12 +53,20 @@ builder.Services.AddAuthentication()
         googleOptions.ClientSecret = "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";
     });
 
-//o=>o.DefaultAuthenticateScheme =CookieAuthenticationDefaults.AuthenticationScheme
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped(sc => ShoppingCart.GetShopingCart(sc));
+/*builder.Services.AddScoped<ISession>();*/
+builder.Services.AddScoped<ICartUtility, CartUtility>();
+
+//o=>o.DefaultAuthenticateScheme =CookieAuthenticationDefaults.AuthenticationScheme
+
 
 builder.Services.AddMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddSession(o =>
+{
+    o.Cookie.Name = "Cart";
+    o.IdleTimeout = TimeSpan.FromDays(1);
+});
 
 var app = builder.Build();
 

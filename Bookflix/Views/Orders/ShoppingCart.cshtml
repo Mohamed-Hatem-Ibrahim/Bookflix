@@ -1,8 +1,9 @@
-﻿@using Bookflix.Data.ViewModels
-@model ShoppingCartVM
+﻿@using Bookflix.Data.Cart
+@model ShoppingCart
 
 @{
     ViewData["Title"] = "Shopping cart";
+    decimal total = 0;
 }
 
 
@@ -23,7 +24,8 @@
 
                 </thead>
                 <tbody>
-                    @foreach(var item in Model.ShopingCart.shoppingCartItems) {
+                    @foreach(var item in Model.shoppingCartItems) {
+                        total += item.Amount * item.Book.Price;
                         <tr>
                             <td class="align-middle">@item.Amount</td>
                             <td class="align-middle">@item.Book.Title</td>
@@ -42,7 +44,7 @@
                     <tr>
                         <td colspan="2"></td>
                         <td><b>Total:</b></td>
-                        <td>@Model.ShoppingCartTotal.ToString("c")</td>
+                        <td>@total.ToString("c")</td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -70,7 +72,7 @@
     <script src="https://www.paypalobjects.com/api/checkout.js">
         </script>
     <script>
-        let total = @Html.Raw(@Model.ShoppingCartTotal);
+        let total = @Html.Raw(@total);
 
 
         paypal.Button.render({

@@ -1,6 +1,9 @@
-﻿@using Bookflix.Data.ViewModels
-@model ShoppingCartVM
+﻿@using Bookflix.Data.Cart
+@model ShoppingCart
 
+@{
+    decimal total = 0;
+}
 @* @foreach(var item in Model) {
     <tr>
     <td class="align-middle">@item.Amount</td>
@@ -20,13 +23,14 @@
 <div class="right-side-cart-area">
     <!-- Cart Button -->
     <div class="cart-button">
-        <a href="#" id="rightSideCart"><img src="/img/core-img/bag.svg" alt=""> <span>@Model.ShopingCart.shoppingCartItems.Count</span></a>
+        <a href="#" id="rightSideCart"><img src="/img/core-img/bag.svg" alt=""> <span>@Model.shoppingCartItems.Count</span></a>
     </div>
     <div class="cart-content d-flex">
         <!-- Cart List Area -->
         <div class="cart-list">
-            @foreach (var item in Model.ShopingCart.shoppingCartItems)
+            @foreach (var item in Model.shoppingCartItems)
             {
+                total += item.Book.Price * item.Amount;
             <!-- Single Cart Item -->
                 <div class="single-cart-item">
                     <a href="#" class="product-image">
@@ -79,10 +83,10 @@
         <div class="cart-amount-summary">
             <h2>Summary</h2>
             <ul class="summary-table">
-                <li><span>subtotal:</span> <span>@Model.ShoppingCartTotal.ToString("c")</span></li>
+                <li><span>subtotal:</span> <span>@total.ToString("c")</span></li>
                 <li><span>delivery:</span> <span>Free</span></li>
                 <li><span>discount:</span> <span>0%</span></li>
-                <li><span>total:</span> <span>@Model.ShoppingCartTotal.ToString("c")</span></li>
+                <li><span>total:</span> <span>@total.ToString("c")</span></li>
             </ul>
             <div class="checkout-btn mt-100">
                 <a href="#" class="btn essence-btn">check out</a>

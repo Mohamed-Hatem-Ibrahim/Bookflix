@@ -1,33 +1,32 @@
 ﻿using Bookflix.Data.Cart;
-using Bookflix.Data.ViewModels;
 using Bookflix.Models;
 using Bookflix.Services;
 using Bookflix.Services.Orders;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Bookflix.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
+
         private readonly IRepository<Book> repository;
-        private readonly ShoppingCart shoppingCart;
         private readonly IOrderService orderService;
-        public OrdersController(IRepository<Book> Repository, ShoppingCart ShopingCart,IOrderService OrderService)
+        ICartUtility utility;
+        UserManager<ApplicationUser> userManager;
+        public OrdersController(IRepository<Book> Repository, IOrderService OrderService, ICartUtility cartUtility, UserManager<ApplicationUser> _userManager)
         {
             repository = Repository;
-            shoppingCart = ShopingCart;
             orderService = OrderService;
+            utility = cartUtility;
+            userManager = _userManager;
         }
         public IActionResult ShoppingCart()
         {
-            var items = shoppingCart.GetShoppingCartItems();
-            shoppingCart.shoppingCartItems = items;
-            var response = new ShoppingCartVM()
-            {
-                ShopingCart = shoppingCart,
-                ShoppingCartTotal = shoppingCart.GetShoppingCartTotal(),
-            };
+            var response = new ShoppingCart() { shoppingCartItems = utility.GetShopingCart().shoppingCartItems };
             return View(response);
         }
 
@@ -35,9 +34,10 @@ namespace Bookflix.Controllers
         {
             var book = repository.GetDetails(id);
 
-            if(book != null)
+            if (book != null)
             {
-                shoppingCart.AddItemToCart(book);
+                utility.AddItemToCart(book);
+
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
@@ -48,28 +48,42 @@ namespace Bookflix.Controllers
 
             if (book != null)
             {
-                shoppingCart.RemoveItemFromCart(book);
+                utility.RemoveItemFromCart(book);
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
 
 
-        public async Task  <IActionResult> CompleteOrder()
+        public IActionResult CompleteOrder()
         {
-            var items = shoppingCart.GetShoppingCartItems();
+            var items = utility.GetShoppingCartItems();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
+            utility.ClearCart();
 
-            await orderService.StoreOrderAsync(items, userId, userEmailAddress);
-            await shoppingCart.ClearShoppingAsync();
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].Book.StockNo -= items[i].Amount;
+                repository.Update(items[i].Book.ISBN, items[i].Book);
+            }
+            orderService.StoreOrder(items, userId, userEmailAddress);
             return View("OrderCompleted");
         }
 
-        public async Task <IActionResult> Index()
+        public IActionResult Index()
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string userRole = User.FindFirstValue(ClaimTypes.Role);
-            var orders =await orderService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
+            var orders = orderService.GetOrdersByUserIdAndRole(userId, userRole);
+
+            var users = new List<ApplicationUser>();
+            foreach (var order in orders)
+            {
+                users.Add(userManager.FindByIdAsync(order.UserId).Result);
+            }
+
+            ViewBag.users = users;
             return View(orders);
         }
     }
