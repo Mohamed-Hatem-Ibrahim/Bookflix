@@ -33,6 +33,13 @@ namespace Bookflix.Controllers
             return View(BookRepo.GetAll());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string search)
+        {
+            var foundBooks = BookRepo.GetAll().Where(x => x.Title.IndexOf(search.Trim().ToLower(), StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            return View(foundBooks);
+        }
+
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int id)
         {
