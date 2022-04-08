@@ -20,7 +20,7 @@ namespace Bookflix.Services
 
         public Book? GetDetails(int? _isbn)
         {
-            return Context.Books.Find(_isbn);
+            return Context.Books.Include(a => a.Author).Include(p => p.Publisher).Include(c => c.Categories).Where(b => b.ISBN == _isbn).FirstOrDefault();
         }
 
         public void Insert(Book? book)
