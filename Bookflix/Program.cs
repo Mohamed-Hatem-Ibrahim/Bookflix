@@ -37,7 +37,7 @@ builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddTransient<IMailService, MailService>();
-//?????????????????
+
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Register", "/Register");
