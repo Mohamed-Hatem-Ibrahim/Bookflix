@@ -47,7 +47,7 @@ namespace Bookflix.Controllers
                 return NotFound();
             }
 
-            return View(book);
+            return PartialView("_DetailsPopUp", book);
         }
 
         // GET: Books/Create

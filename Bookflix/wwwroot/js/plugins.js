@@ -21,6 +21,35 @@
     }
 }());
 
+var TeamDetailPostBackURL = '/Book/Details';
+$(function () {
+    $(".viewDetailsBtn").click(function () {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": true, keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('.modal-content').html(data);
+                $('#bookDetails').modal(options);
+                $('#bookDetails').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    });
+
+
+});
+
 /*! jQuery UI - v1.12.1 - 2018-04-24
 * http://jqueryui.com
 * Includes: widget.js, position.js, form-reset-mixin.js, keycode.js, labels.js, unique-id.js, widgets/menu.js, widgets/mouse.js, widgets/slider.js

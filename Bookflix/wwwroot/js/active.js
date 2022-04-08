@@ -68,6 +68,9 @@
         cartWrapper.removeClass(cartOn);
     });
 
+        //book card active code
+        var bookDesc = document.getElementById("bookDescription");
+        if (bookDesc.textContent.length )
     // :: ScrollUp Active Code
         const showOnPx = 300;
         const backToTopButton = document.querySelector(".scrollUp")
@@ -172,3 +175,30 @@
     });
     }, 500);
 })(jQuery);
+
+(function () {
+    var TeamDetailPostBackURL = '/Book/Details';
+    $(".viewDetailsBtn").click(function () {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": true, keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#detailsModal').html(data);
+                $('#bookDetails').modal(options);
+                $('#bookDetails').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    });
+}());

@@ -1,84 +1,76 @@
 ﻿@model IEnumerable<Book>
 
 @{
-	ViewData["Title"] = "List of Movies";
+    ViewData["Title"] = "List of Movies";
 }
 
+<div class="container row justify-content-center col-8 p-2" id="test">
+    @foreach (var item in Model)
+    {
+        <div class="card book-card ml-5" style="width: 16rem; height:fit-content;">
 
-<div class="row">
-	@foreach (var item in Model)
-	{
-		<div class="card hover book-card" style="width: 18rem; height:fit-content; background-color: #EFEFEF">
-			<div class="book-card">
-				<img class="card-img-top" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
-				<button data-toggle="modal" data-target="#bookDetails" type="button" class="book-card-btn">Quick Look</button>
-			</div>
-			<div class="card-body book-card-cody">
-				<h5 class="card-title">
-					<span style="top: -0.5em; position:relative; font-size: 15px;">EGP</span>
-					<span>@item.Price</span>
-				</h5>
-				<span style="font-size:18px">@item.Title</span>
-				<br>
-				<span style="font-size:18px">@item.Description</span>
-			</div>
+            <div class="book-card">
+                <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
+                <button href="javascript:void(1);" data-id="@item.ISBN" id="viewDetailsBtn" class="viewDetailsBtn book-card-btn">Quick Look</button>
+            </div>
 
-			<div class="card-body text-center">
-				<a asp-controller="Orders" asp-action="AddItemToShoppingCart"  asp-route-id="@item.ISBN"><button class="btn btn-primary col-12">Add to Cart</button></a>
-			</div>
-		</div>
+            <div class="card-body book-card-body">
+                <h5 class="card-title">
+                    <span style="top: -0.5em; position:relative; font-size: 15px;">EGP</span>
+                    <span>@item.Price</span>
+                </h5>
+                <span style="font-size:16px">@item.Title</span>
+                <br>
+                <span id="book-card-description" style="font-size:16px;">
+                    @item.Description
+                    asdajsdnasdjansdjasdjandjnasdjasdjassdaadnadajdnasdajdnasdj
+                    asdajsdnasdjansdjasdjandjnasdjasdjassdaadnadajdnasdajdnasdj
+                </span>
+            </div>
+        </div>
 
-		<div class="modal fade" id="bookDetails" tabindex="-1" role="dialog" aria-labelledby="bookDetailsTitle" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="bookDetailsTitle">@item.Title</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="col modal-body" style="grid-template-columns:1fr 1fr;">
-						<h3 class="mb-3">@item.Description</h3>
+        <div id="detailsModal">
 
-						<div class="book-details-img">
-							<img src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
-						</div>
+        </div>
+    }
 
-						<div class="book-details-body">
-							<span class="data"><b>Author:</b> @item.Author.Name</span>
-							<span class="data"><b>Publisher:</b> @item.Publisher.Name </span>
-							<span class="data"><b>Publisher Year:</b> @item.PublicationYear.Day/@item.PublicationYear.Month/@item.PublicationYear.Year </span>
-							<span class="data">
-								<b>Categories:</b>
-								@for (var i = 0; i < item?.Categories.Count; i++)
-								{
-									<span style="padding:5px; font-size:10px; border: 1px solid black; border-radius:10px;">@item.Categories.ToList()[i]</span>
-								}
-							</span>
-							<span class="data"><b>Pages:</b> @item.PagesNo </span>
-							<span class="data">
-								<b>Status:</b>
-								@if(@item.StockNo > 0)
-								{
-									<span class="text-success">Available</span>
-								}
-								else
-								{
-									<span class="text-danger">Not Available</span>
-								}
-							</span>
-							
-							<span class="data"><b>Price:</b>  @item.Price EGP.</span>
-						</div>
-
-					</div>
-					<div class=" modal-footer" style="float:left;">
-						<button type="button" class="btn btn-primary" data-dismiss="modal" asp-controller="Orders" asp-action="AddItemToShoppingCart"  asp-route-id="@item.ISBN">Add to Cart</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
 </div>
 
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+
+        (function () {
+            var TeamDetailPostBackURL = '/Book/Details';
+            $(".viewDetailsBtn").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": true, keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#detailsModal').html(data);
+                        $('#bookDetails').modal(options);
+                        $('#bookDetails').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+        }());
+
+    </script>
+}
 @*@await Html.PartialAsync("_CreateItem", "Movies") *@
