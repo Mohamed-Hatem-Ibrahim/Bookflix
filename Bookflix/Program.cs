@@ -5,6 +5,7 @@ using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
 using Bookflix.Services.Orders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,8 +52,11 @@ builder.Services.AddAuthentication()
         googleOptions.ClientSecret = "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";
     });
 
+//o=>o.DefaultAuthenticateScheme =CookieAuthenticationDefaults.AuthenticationScheme
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShopingCart(sc));
+
+builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 
 var app = builder.Build();

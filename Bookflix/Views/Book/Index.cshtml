@@ -24,7 +24,7 @@
 			</div>
 
 			<div class="card-body text-center">
-				<a href="#" class="btn btn-primary col-12">@*<button class="btn btn-primary col-12">*@Add to Cart@*</button>*@</a>
+				<a asp-controller="Orders" asp-action="AddItemToShoppingCart"  asp-route-id="@item.ISBN"><button class="btn btn-primary col-12">Add to Cart</button></a>
 			</div>
 		</div>
 
@@ -73,7 +73,7 @@
 
 					</div>
 					<div class=" modal-footer" style="float:left;">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">Add to Cart</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" asp-controller="Orders" asp-action="AddItemToShoppingCart"  asp-route-id="@item.ISBN">Add to Cart</button>
 					</div>
 				</div>
 			</div>
