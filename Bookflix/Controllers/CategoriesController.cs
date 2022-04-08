@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Bookflix.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
         private readonly IRepository<Category> _categoryRepoService;

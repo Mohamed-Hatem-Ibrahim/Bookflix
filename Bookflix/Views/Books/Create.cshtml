@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    var categories = (List<SelectListItem>)ViewData["CategoryIDs"];
 }
 
 
@@ -52,7 +53,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="AuthorID" class="control-label"></label>
-                <select asp-for="AuthorID" class ="form-control" asp-items="ViewBag.AuthorID"></select>
+                <select asp-for="AuthorID" class="form-control" asp-items="ViewBag.AuthorID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categories" class="control-label"></label>
+                @foreach (var item in categories)
+                {
+                    <div>
+                        <input type="checkbox" id="@item.Value" name="cats" checked="@item.Selected" value="@item.Value" class="">
+                        <label for="@item.Value" >@item.Text</label>
+                    </div>
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -66,5 +77,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

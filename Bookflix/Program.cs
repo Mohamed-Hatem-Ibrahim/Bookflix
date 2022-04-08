@@ -35,6 +35,7 @@ builder.Services.AddScoped<IRepository<Book>, BookRepoService>();
 builder.Services.AddScoped<IRepository<Author>, AuthorRepoService>();
 builder.Services.AddScoped<IRepository<SoldBook>, SoldBookRepoService>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
+builder.Services.AddScoped<IRepository<BookCategory>, BookCategoriesRepoService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddTransient<IMailService, MailService>();
 //?????????????????
