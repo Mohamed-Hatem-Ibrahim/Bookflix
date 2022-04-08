@@ -69,13 +69,36 @@
     });
 
     // :: ScrollUp Active Code
-    if ($.fn.scrollUp) {
-        $.scrollUp({
-            scrollSpeed: 1000,
-            easingType: 'easeInOutQuart',
-            scrollText: '<i class="fa fa-angle-up" aria-hidden="true"></i>'
-        });
-    }
+        const showOnPx = 300;
+        const backToTopButton = document.querySelector(".scrollUp")
+
+        const scrollContainer = () => {
+            return document.documentElement || document.body;
+        };
+
+        document.addEventListener("scroll", () => {
+            if (scrollContainer().scrollTop > showOnPx) {
+                backToTopButton.classList.remove("d-none")
+            } else {
+                backToTopButton.classList.add("d-none")
+            }
+        })
+
+
+        const goToTop = () => {
+            document.body.scrollIntoView({ behavior: "smooth" ,});
+        };
+        backToTopButton.addEventListener("click", goToTop)
+
+
+
+    //if ($.fn.scrollUp) {
+    //    $.scrollUp({
+    //        scrollSpeed: 1000,
+    //        easingType: 'easeInOutQuart',
+    //        scrollText: '<i class="fa fa-angle-up" aria-hidden="true"></i>'
+    //    });
+    //}
 
     // :: Sticky Active Code
     $window.on('scroll', function () {

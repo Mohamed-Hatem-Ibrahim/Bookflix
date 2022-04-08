@@ -5,87 +5,100 @@
 }
 
 
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="text-center" style="color:#252525;">Books</h1>
-			<p>
-				<a class="text-center d-block" style="color:#858585" asp-action="Create">Create New</a>
-			</p>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>
-							@Html.DisplayNameFor(model => model.Title)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Description)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.PublicationYear)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Price)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.PagesNo)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.ImageName)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.StockNo)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Publisher)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Author)
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model)
-					{
+<div class="Books-Index">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+				<h1 class="text-center font-h1">Books</h1>
+                <p class="text-center">
+                    <a class="anchor-new" asp-action="Create">
+                        <i class="bi bi-plus"> </i> Add New 
+                    </a>
+                </p>
+				<table class="table table-bordered border-success">
+					<thead>
 						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.Title)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Description)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.PublicationYear)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Price)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.PagesNo)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.ImageName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.StockNo)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Publisher.Name)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Author.Name)
-							</td>
-							<td>
-								<a class="text-center d-block" style="color:#858585" asp-action="Edit" asp-route-id="@item.ISBN">Edit</a> |
-								<a class="text-center d-block" style="color:#858585" asp-action="Details" asp-route-id="@item.ISBN">Details</a> |
-								<a class="text-center d-block" style="color:#858585" asp-action="Delete" asp-route-id="@item.ISBN">Delete</a>
-							</td>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Title)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Description)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.PublicationYear)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Price)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.PagesNo)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.ImageName)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.StockNo)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Publisher)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Author)
+							</th>
+							<th></th>
 						</tr>
-					}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						@foreach (var item in Model)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => item.Title)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Description)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.PublicationYear)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Price)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.PagesNo)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.ImageName)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.StockNo)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Publisher.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Author.Name)
+								</td>
+								<td>
+									<p>
+										<a asp-action="Edit" asp-route-id="@item.ISBN" class="anchor-Edit">
+											<i class="bi bi-pencil"></i> Edit
+										</a>
+                                
+										<a asp-action="Details" asp-route-id="@item.ISBN" class="anchor-Edit"> 
+											<i class="bi bi-eye"></i> Details
+										</a>
+                                
+										<a asp-action="Delete" asp-route-id="@item.ISBN" class="anchor-Delete">
+											<i class="bi bi-trash"></i> Delete
+										</a>
+									</p>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
-

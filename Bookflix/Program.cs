@@ -5,6 +5,7 @@ using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
 using Bookflix.Services.Orders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,7 @@ builder.Services.AddScoped<IRepository<Category>, CategoryRepoService>();
 builder.Services.AddScoped<IRepository<BookCategory>, BookCategoriesRepoService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddTransient<IMailService, MailService>();
-//?????????????????
+
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Register", "/Register");
@@ -52,9 +53,20 @@ builder.Services.AddAuthentication()
         googleOptions.ClientSecret = "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";
     });
 
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped(sc => ShoppingCart.GetShopingCart(sc));
-builder.Services.AddSession();
+/*builder.Services.AddScoped<ISession>();*/
+builder.Services.AddScoped<ICartUtility, CartUtility>();
+
+//o=>o.DefaultAuthenticateScheme =CookieAuthenticationDefaults.AuthenticationScheme
+
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSession(o =>
+{
+    o.Cookie.Name = "Cart";
+    o.IdleTimeout = TimeSpan.FromDays(1);
+});
 
 var app = builder.Build();
 

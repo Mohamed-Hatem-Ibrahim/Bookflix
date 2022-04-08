@@ -196,31 +196,6 @@ namespace Bookflix.Migrations.BookflixDb
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("Bookflix.Models.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookISBN")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShoppingCartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookISBN");
-
-                    b.ToTable("ShoppingCartItems");
-                });
-
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>
                 {
                     b.Property<int>("BookISBN")
@@ -281,7 +256,7 @@ namespace Bookflix.Migrations.BookflixDb
                         .IsRequired();
 
                     b.HasOne("Bookflix.Models.Order", "Order")
-                        .WithMany("Items")
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -289,17 +264,6 @@ namespace Bookflix.Migrations.BookflixDb
                     b.Navigation("Book");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("Bookflix.Models.ShoppingCartItem", b =>
-                {
-                    b.HasOne("Bookflix.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookISBN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>
@@ -318,11 +282,6 @@ namespace Bookflix.Migrations.BookflixDb
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Bookflix.Models.Order", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("Bookflix.Models.Book", b =>
                 {
                     b.Navigation("Categories");
@@ -331,6 +290,11 @@ namespace Bookflix.Migrations.BookflixDb
             modelBuilder.Entity("Bookflix.Models.Category", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Publisher", b =>

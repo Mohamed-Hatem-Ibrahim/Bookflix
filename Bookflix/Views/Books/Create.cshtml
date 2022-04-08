@@ -6,78 +6,75 @@
 }
 
 
-<hr />
-<div class="p-1">
-    <h4 class="text-center" style="color:#252525;">Create New Book</h4>
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublicationYear" class="control-label"></label>
-                <input asp-for="PublicationYear" class="form-control" />
-                <span asp-validation-for="PublicationYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PagesNo" class="control-label"></label>
-                <input asp-for="PagesNo" class="form-control" />
-                <span asp-validation-for="PagesNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" accept="image/*" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockNo" class="control-label"></label>
-                <input asp-for="StockNo" class="form-control" />
-                <span asp-validation-for="StockNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublisherID" class="control-label"></label>
-                <Select asp-for="PublisherID" class="form-control" asp-items="ViewBag.PublisherID"></Select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AuthorID" class="control-label"></label>
-                <select asp-for="AuthorID" class="form-control" asp-items="ViewBag.AuthorID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Categories" class="control-label"></label>
-                @foreach (var item in categories)
-                {
-                    <div>
-                        <input type="checkbox" id="@item.Value" name="cats" checked="@item.Selected" value="@item.Value" class="">
-                        <label for="@item.Value" >@item.Text</label>
+<div class="Books-Create">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h1 class="text-center font-h1">Create</h1>
+
+                <h4 class="text-center font-h4">Book</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <form asp-action="Create" enctype="multipart/form-data">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublicationYear" class="control-label"></label>
+                                <input asp-for="PublicationYear" class="form-control" />
+                                <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PagesNo" class="control-label"></label>
+                                <input asp-for="PagesNo" class="form-control" />
+                                <span asp-validation-for="PagesNo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageFile" class="control-label"></label>
+                                <input asp-for="ImageFile" accept="image/*" />
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StockNo" class="control-label"></label>
+                                <input asp-for="StockNo" class="form-control" />
+                                <span asp-validation-for="StockNo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublisherID" class="control-label"></label>
+                                <Select asp-for="PublisherID" class="form-control" asp-items="ViewBag.PublisherID"></Select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="AuthorID" class="control-label"></label>
+                                <select asp-for="AuthorID" class ="form-control" asp-items="ViewBag.AuthorID"></select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                                  <a class="Back-To-List" asp-action="Index">
+                                  <i class="bi bi-arrow-left"></i>Back to List
+                                </a>>
+                            </div>
+                        </form>
                     </div>
+                </div>
+
+                @section Scripts {
+                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
                 }
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
