@@ -52,8 +52,8 @@
     var cartOverlay = $(".cart-bg-overlay");
     var cartWrapper = $(".right-side-cart-area");
     var cartbtn2 = $("#rightSideCart");
-    var cartOverlayOn = "cart-bg-overlay-on";
-    var cartOn = "cart-on";
+        var cartOverlayOn = "cart-bg-overlay-on";
+        var cartOn = "cart-on";
 
     cartbtn1.on('click', function () {
         cartOverlay.toggleClass(cartOverlayOn);
@@ -68,12 +68,9 @@
         cartWrapper.removeClass(cartOn);
     });
 
-        //book card active code
-        var bookDesc = document.getElementById("bookDescription");
-        if (bookDesc.textContent.length )
     // :: ScrollUp Active Code
         const showOnPx = 300;
-        const backToTopButton = document.querySelector(".scrollUp")
+        const backToTopButton = document.querySelector(".scrollUp");
 
         const scrollContainer = () => {
             return document.documentElement || document.body;
