@@ -6,18 +6,18 @@ namespace Bookflix.Data.ViewComponents
     public class ShoppingCartCount :ViewComponent
     {
   
-            private readonly ShoppingCart shoppingCart;
+            private readonly ICartUtility utility;
 
-            public ShoppingCartCount(ShoppingCart ShoppingCart)
+            public ShoppingCartCount(ICartUtility cartUtility)
             {
-                shoppingCart = ShoppingCart;
+                utility = cartUtility;
             }
 
             public IViewComponentResult Invoke()
             {
-                var items = shoppingCart.GetShoppingCartItems();
 
-                return View(items.Count);
+
+                return View(utility.GetShoppingCartItems().Count);
             }
         }
     

@@ -1,5 +1,6 @@
 ﻿using Bookflix.Models;
 using Bookflix.Models.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Services.Orders
@@ -7,26 +8,29 @@ namespace Bookflix.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly BookflixDbContext _dbContext;
-
-        public OrderService(BookflixDbContext dbContext)
+        private UserManager<ApplicationUser> Manager;
+        public OrderService(BookflixDbContext dbContext,UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            Manager = userManager;
         }
-        public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string UserId,string userRole)
+        public List<Order> GetOrdersByUserIdAndRole(string UserId, string userRole)
         {
-            var orders = await _dbContext.Orders.Include(n=> n.OrderItems).ThenInclude(n=>n.Book)
-                .ToListAsync();
+            var orders = _dbContext.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Book)
+                .ToList();
 
-
-            if(userRole != "Admin")
+            var user = Manager.FindByIdAsync(UserId).Result;
+            bool isAdmin =  Manager.IsInRoleAsync(user, "Admin").Result;
+            
+            if (!isAdmin)
             {
-                orders = orders.Where(i =>i.UserId == UserId).ToList();
+                orders = orders.Where(i => i.UserId == UserId).ToList();
 
             }
             return orders;
         }
 
-        public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
+        public void StoreOrder(List<ShoppingCartItem> items, string userId, string userEmailAddress)
         {
             var order = new Order()
             {
@@ -34,8 +38,8 @@ namespace Bookflix.Services.Orders
                 Email = userEmailAddress,
 
             };
-            await _dbContext.Orders.AddAsync(order);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Orders.Add(order);
+            _dbContext.SaveChanges();
 
             foreach (var item in items)
             {
@@ -46,11 +50,11 @@ namespace Bookflix.Services.Orders
                     OrderId = order.Id,
                     Price = item.Book.Price,
                 };
-               await _dbContext.OrderItems.AddAsync(orderItem);
+                _dbContext.OrderItems.Add(orderItem);
 
             }
 
-            await _dbContext.SaveChangesAsync();    
+            _dbContext.SaveChanges();
         }
     }
 
