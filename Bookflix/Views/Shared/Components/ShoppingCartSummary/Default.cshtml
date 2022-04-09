@@ -31,15 +31,16 @@
             @foreach (var item in Model.shoppingCartItems)
             {
                 total += item.Book.Price * item.Amount;
-            <!-- Single Cart Item -->
+                <!-- Single Cart Item -->
                 <div class="single-cart-item">
-                    <a href="#" class="product-image">
+                    <span  class="product-image">
                         <img src="@("~/img/books-img/"+item.Book.ImageName)" class="cart-thumb" alt="" asp-append-version="true">
                         <!-- Cart Item Desc -->
                     <div class="cart-item-desc">
 
-                        @* hena yasta t7ot nafs code el byshil el product mn el cart *@
-                            <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                            @* hena yasta t7ot nafs code el byshil el product mn el cart *@
+                            <a lass="text-danger" asp-controller="Orders" asp-action="RemoveAllAmountOfElement"
+                                asp-route-id="@item.Book.ISBN" asp-route-amount="@item.Amount" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></a>
 
 
 
@@ -50,41 +51,32 @@
                             <p class="price">@item.Book.Price.ToString("c")</p>
                             <p class="price">@((item.Amount* item.Book.Price).ToString("c"))</p>
                         </div>
-                    </a>
+                    </span>
                 </div>
+
+
+@*                <div class="center">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                        </span>
+                        <input type="text" name="quant[2]" class="form-control input-number" value="@item.Amount" min="1" max="100">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                    </div>
+
+                </div>*@
 
 
             }
-            @*            <!-- Single Cart Item -->
-                <div class="single-cart-item">
-                <a href="#" class="product-image">
-                <img src="/img/product-img/product-2.jpg" class="cart-thumb" alt="">
-                <!-- Cart Item Desc -->
-                <div class="cart-item-desc">
-                <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
-                <span class="badge">Mango</span>
-                <h6>Button Through Strap Mini Dress</h6>
-                <p class="size">Size: S</p>
-                <p class="color">Color: Red</p>
-                <p class="price">$45.00</p>
-                </div>
-                </a>
-                </div>
-                <!-- Single Cart Item -->
-                <div class="single-cart-item">
-                <a href="#" class="product-image">
-                <img src="/img/product-img/product-3.jpg" class="cart-thumb" alt="">
-                <!-- Cart Item Desc -->
-                <div class="cart-item-desc">
-                <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
-                <span class="badge">Mango</span>
-                <h6>Button Through Strap Mini Dress</h6>
-                <p class="size">Size: S</p>
-                <p class="color">Color: Red</p>
-                <p class="price">$45.00</p>
-                </div>
-                </a>
-                </div>*@
+           
+
+
         </div>
         <!-- Cart Summary -->
         <div class="cart-amount-summary">
@@ -96,8 +88,37 @@
                 <li><span>total:</span> <span>@total.ToString("c")</span></li>
             </ul>
             <div class="checkout-btn mt-100">
-                <a href="#" class="btn essence-btn">check out</a>
+                <a asp-controller="Orders" asp-action="ShoppingCart" class="btn essence-btn">check out</a>
             </div>
         </div>
     </div>
 </div>
+
+
+
+@*<script>
+    function removeItem(isbn,amount){
+
+    var myUrl = window.location.origin +"/Orders/RemoveItemFromShoppingCart/" + amount;
+    for(let i = 0; i< amount;i++){
+    $.ajax({
+    url: myUrl,
+    success: function (data) {
+    console.log(myUrl);
+
+    },
+    error: function (error) {
+    console.log("error");
+    }
+    })
+    }
+
+
+    }
+
+    </script>*@
+
+
+
+
+@* <span class="product-remove" id="close"><i class="fa fa-close" aria-hidden="true"></i></span>*@

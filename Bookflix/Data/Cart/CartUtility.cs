@@ -75,7 +75,7 @@ namespace Bookflix.Data.Cart
 
             int index = shoppingCartItems.FindIndex(m => m.Book.ISBN == book.ISBN);
 
-            if (shoppingCartItems[index].Amount == 1)
+            if (shoppingCartItems[index]?.Amount == 1)
             {
                 shoppingCartItems.Remove(shoppingCartItems[index]);
             }
