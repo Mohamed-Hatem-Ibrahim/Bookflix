@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - BookFlix</title>
     <!-- Core Style CSS -->
     <link href="~/css/core-style.css" rel="stylesheet">
-    <link href="~/css/bootstrap.min.css"  rel="stylesheet"/>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="~/css/adminStyle.css" rel="stylesheet" />
     <!-- ##### Footer Area End ##### -->
@@ -50,28 +50,27 @@
 
                                     <ul class="single-mega cn-col-4">
                                         <li class="title">Book Types</li>
-                                        <li><a href="/Book/Index/?booktypess=ShortStory" >Short Stories</a></li>
-                                        <li><a href="/Book/Index/?booktypess=Novel">Novels</a></li>
-                                        <li><a href="/Book/Index/?booktypess=Novellas">Novellas</a></li>
-                                        <li><a href="/Book/Index/?booktypess=Book" >Books</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-booktypess="ShortStory">Short Stories</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-booktypess="Novel">Novels</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-booktypess="Novellas">Novellas</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-booktypess="Book">Books</a></li>
                                     </ul>
                                     <ul class="single-mega cn-col-4">
                                         <li class="title">Publishing Types</li>
-                                        <li><a href="/Book/Index/?publishingtypess=Traditional">Traditional</a></li>
-                                        <li><a href="/Book/Index/?publishingtypess=Self">Self</a></li>
-                                        <li><a href="/Book/Index/?publishingtypess=Joint">Joint</a></li>
-                                        <li><a href="/Book/Index/?publishingtypess=Vanity">Vanity</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-publishingtypess="Traditional">Traditional</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-publishingtypess="Self">Self</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-publishingtypess="Joint">Joint</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-publishingtypess="Vanity">Vanity</a></li>
                                     </ul>
                                     <ul class="single-mega cn-col-4">
                                         <li class="title">Book Cover Types</li>
-                                        <li><a href="/Book/Index/?covertypess=Softcover">Soft Cover</a></li>
-                                        <li><a href="/Book/Index/?covertypess=HardcoverWithImageWrap">Hard Cover With Image Wrap</a></li>
-                                        <li><a href="/Book/Index/?covertypess=HardcoverWithDustJacket">Hard Cover With Dust Jacket</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-covertypess="Softcover">Soft Cover</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-covertypess="HardcoverWithImageWrap">Hard Cover With Image Wrap</a></li>
+                                        <li><a asp-controller="Book" asp-action="Index" asp-route-covertypess="HardcoverWithDustJacket">Hard Cover With Dust Jacket</a></li>
                                     </ul>
                                     <div class="single-mega cn-col-4">
                                         <img src="/img/Logo.png" alt="">
                                     </div>
-
                                 </div>
                                 <span class="dd-trigger"></span>
                                 <span class="dd-arrow"></span>
@@ -117,85 +116,85 @@
         </div>
     </header>
 
-<div class="container-fluid mt-100">
-    <main role="main" style="padding-bottom:1000px" class="pb-5">
-        @await Component.InvokeAsync("ShoppingCartSummary")
-        @RenderBody()
-    </main>
-</div>
+    <div class="container-fluid mt-100">
+        <main role="main" style="padding-bottom:1000px" class="pb-5">
+            @await Component.InvokeAsync("ShoppingCartSummary")
+            @RenderBody()
+        </main>
+    </div>
 
 
-<footer class="footer_area clearfix ">
-    <div class="container">
-        <div class="row">
-            <!-- Single Widget Area -->
-            <div class="col-12 col-md-6">
-                <div class="single_widget_area d-flex mb-30">
-                    <!-- Logo -->
-                    <div class="footer-logo mr-50">
-                        <a href="#"><h1>Bookflix</h1></a>
+    <footer class="footer_area clearfix ">
+        <div class="container">
+            <div class="row">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area d-flex mb-30">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="#"><h1>Bookflix</h1></a>
+                        </div>
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <ul>
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <!-- Footer Menu -->
-                    <div class="footer_menu">
-                        <ul>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Contact</a></li>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area mb-30">
+                        <ul class="footer_widget_menu">
+                            <li><a href="#">Shipping and Delivery</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- Single Widget Area -->
-            <div class="col-12 col-md-6">
-                <div class="single_widget_area mb-30">
-                    <ul class="footer_widget_menu">
-                        <li><a href="#">Shipping and Delivery</a></li>
-                        <li><a href="#">Guides</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-end">
-            <!-- Single Widget Area -->
-            <div class="col-12 col-md-6">
-                <div class="single_widget_area">
-                    <div class="footer_social_area">
-                        <a href="https://www.facebook.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        <a href="https://www.instagram.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                        <a href="https://www.twitter.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                        <a href="https://www.pinterest.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Pinterest"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                        <a href="https://www.youtube.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+            <div class="row align-items-end">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_social_area">
+                            <a href="https://www.facebook.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a href="https://www.twitter.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                            <a href="https://www.pinterest.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Pinterest"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <a href="https://www.youtube.com/" target="_blank" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-md-12 text-center">
-                <p>
-                    Copyright &copy;
-                    <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by ITI Trainees
-                </p>
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by ITI Trainees
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-<button type="button" class="scrollUp">
-    <svg xmlns="http://www.w3.org/2000/svg"
-         class="scrollUp-icon"
-         fill="none"
-         viewBox="0 0 22 21"
-         stroke="currentColor">
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 15l7-7 7 7" />
-    </svg>
-</button>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <button type="button" class="scrollUp">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="scrollUp-icon"
+             fill="none"
+             viewBox="0 0 22 21"
+             stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

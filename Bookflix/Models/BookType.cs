@@ -4,7 +4,7 @@
     {
         ShortStory,
         Novel,
-        Book,
-        Novellas
+        Novellas,
+        Book
     }
 }
