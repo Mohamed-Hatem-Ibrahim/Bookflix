@@ -734,6 +734,7 @@ img {
     z-index: 1;
     -webkit-transition-duration: 500ms;
     transition-duration: 500ms;
+    height:400px;
 }
 
     .right-side-cart-area .cart-content .cart-list .single-cart-item .product-image {

@@ -195,14 +195,14 @@
                         $('#bookDetails').modal(options);
                         $('#bookDetails').modal('show');
 
-                },
-                error: function () {
-                    alert("Dynamic content load failed.");
-                }
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
             });
-        });
-    }());
+        }());
 
-</script>
-        }
+    </script>
+}
 @*@await Html.PartialAsync("_CreateItem", "Movies") *@
