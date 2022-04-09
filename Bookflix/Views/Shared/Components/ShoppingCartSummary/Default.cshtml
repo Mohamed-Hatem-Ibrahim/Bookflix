@@ -33,51 +33,24 @@
                 total += item.Book.Price * item.Amount;
                 <!-- Single Cart Item -->
                 <div class="single-cart-item">
-                    <span  class="product-image">
+                    <span class="product-image">
                         <img src="@("~/img/books-img/"+item.Book.ImageName)" class="cart-thumb" alt="" asp-append-version="true">
                         <!-- Cart Item Desc -->
-                    <div class="cart-item-desc">
+                        <div class="cart-item-desc">
 
-                            @* hena yasta t7ot nafs code el byshil el product mn el cart *@
                             <a lass="text-danger" asp-controller="Orders" asp-action="RemoveAllAmountOfElement"
-                                asp-route-id="@item.Book.ISBN" asp-route-amount="@item.Amount" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></a>
-
-
+                               asp-route-id="@item.Book.ISBN" asp-route-amount="@item.Amount" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></a>
 
                             <span class="badge">@item.Book.Title</span>
                             <h6>@item.Book.Description</h6>
-                            @*<p class="size">Size: S</p>*@
-                            @*<p class="color">Color: Red</p>*@
                             <p class="price">@item.Book.Price.ToString("c")</p>
                             <p class="price">@((item.Amount* item.Book.Price).ToString("c"))</p>
                         </div>
                     </span>
                 </div>
-
-
-@*                <div class="center">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                        </span>
-                        <input type="text" name="quant[2]" class="form-control input-number" value="@item.Amount" min="1" max="100">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </span>
-                    </div>
-
-                </div>*@
-
-
             }
-           
-
-
         </div>
+
         <!-- Cart Summary -->
         <div class="cart-amount-summary">
             <h2>Summary</h2>
@@ -93,32 +66,3 @@
         </div>
     </div>
 </div>
-
-
-
-@*<script>
-    function removeItem(isbn,amount){
-
-    var myUrl = window.location.origin +"/Orders/RemoveItemFromShoppingCart/" + amount;
-    for(let i = 0; i< amount;i++){
-    $.ajax({
-    url: myUrl,
-    success: function (data) {
-    console.log(myUrl);
-
-    },
-    error: function (error) {
-    console.log("error");
-    }
-    })
-    }
-
-
-    }
-
-    </script>*@
-
-
-
-
-@* <span class="product-remove" id="close"><i class="fa fa-close" aria-hidden="true"></i></span>*@
