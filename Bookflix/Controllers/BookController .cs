@@ -20,7 +20,12 @@ namespace Bookflix.Controllers
         public IRepository<Category> CategoryRepo { get; set; }
         public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public BookController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IRepository<Category> categoryRepo, IWebHostEnvironment webHostEnvironment)
+        public BookController(
+            IRepository<Book> _BookRepo,
+            IRepository<Author> authorRepo,
+            IRepository<Publisher> publiserRepo,
+            IRepository<Category> categoryRepo,
+            IWebHostEnvironment webHostEnvironment)
         {
             BookRepo = _BookRepo;
             AuthorRepo = authorRepo;
@@ -29,8 +34,6 @@ namespace Bookflix.Controllers
             WebHostEnvironment = webHostEnvironment;
         }
 
-        //string text = booktype.ToString();
-        //int num = (int)Enum.Parse(typeof(BookType), text);
         // GET: Books
 
         private List<SelectListItem> GetEnumValues(Type type)
@@ -47,12 +50,37 @@ namespace Bookflix.Controllers
             return values;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        private List<SelectListItem> GetEnumValues(Type type, string[] existing)
         {
-            var booktypes = GetEnumValues(typeof(BookType));
-            var covertypes = GetEnumValues(typeof(CoverType));
-            var publishingtypes = GetEnumValues(typeof(PublishingType));
+            List<SelectListItem> values = new List<SelectListItem>();
+            foreach (var item in Enum.GetValues(type))
+            {
+                values.Add(new SelectListItem
+                {
+                    Text = item.ToString(),
+                    Value = item.ToString(),
+                    Selected = existing.Contains(item.ToString())
+                });
+            }
+            return values;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index(string[] publishingtypess, string[] covertypess, string[] booktypess, int activePage = 1)
+        {
+            List<Book> foundBooks = new();
+            List<Book> allBooks = BookRepo.GetAll();
+            foundBooks.AddRange(allBooks.Where(x => booktypess.Any(bt => bt.ToString() == x.BookType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => covertypess.Any(ct => ct.ToString() == x.CoverType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => publishingtypess.Any(pt => pt.ToString() == x.PublishingType.ToString())).ToList());
+            foundBooks = foundBooks.Distinct().ToList();
+            if (publishingtypess.Length == 0 && covertypess.Length == 0 && booktypess.Length == 0)
+                foundBooks = allBooks;
+
+
+            var booktypes = GetEnumValues(typeof(BookType), booktypess);
+            var covertypes = GetEnumValues(typeof(CoverType), covertypess);
+            var publishingtypes = GetEnumValues(typeof(PublishingType), publishingtypess);
             var categories = new List<SelectListItem>();
             foreach (var category in CategoryRepo.GetAll())
             {
@@ -68,21 +96,21 @@ namespace Bookflix.Controllers
             ViewBag.publishingtypes = publishingtypes;
             ViewBag.categories = categories;
 
-            //save number of pages in session
+            double theCount = foundBooks.Count;
+            double divisor = 6;
+            int numberOfPages = int.Parse(Math.Ceiling(theCount / divisor).ToString());
 
+            ViewBag.activePage = activePage;
+            ViewBag.NumberOfPages = numberOfPages;
 
-            return View(BookRepo.GetAll());
+            
+            foundBooks = foundBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
+
+            return View(foundBooks);
         }
 
-        //[ActionName("IndexSearch")]
-        //public async Task<IActionResult> Index(string search)
-        //{
-        //    var foundBooks = BookRepo.GetAll().Where(x => x.Title.IndexOf(search?.Trim()?.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-        //    return View(foundBooks);
-        //}
-
         [HttpPost]
-        public IActionResult Index(string[] categories, string[] publishingtypes, string[] covertypes, string[] booktypes, string search)
+        public IActionResult Index(string[] categories, string[] publishingtypes, string[] covertypes, string[] booktypes, string search, int activePage = 1)
         {
 
             List<Book> foundBooks = new();
@@ -96,9 +124,9 @@ namespace Bookflix.Controllers
             foundBooks = foundBooks.Distinct().ToList();
 
 
-            var booktypesss = GetEnumValues(typeof(BookType));
-            var covertypesss = GetEnumValues(typeof(CoverType));
-            var publishingtypesss = GetEnumValues(typeof(PublishingType));
+            var booktypesss = GetEnumValues(typeof(BookType), booktypes);
+            var covertypesss = GetEnumValues(typeof(CoverType), covertypes);
+            var publishingtypesss = GetEnumValues(typeof(PublishingType), publishingtypes);
             var categoriesss = new List<SelectListItem>();
             foreach (var category in CategoryRepo.GetAll())
             {
@@ -106,6 +134,7 @@ namespace Bookflix.Controllers
                 {
                     Text = category.Name,
                     Value = category.ID.ToString(),
+                    Selected = categories.Any(x => x == category.ID.ToString())
                 });
             }
 
@@ -114,7 +143,18 @@ namespace Bookflix.Controllers
             ViewBag.publishingtypes = publishingtypesss;
             ViewBag.categories = categoriesss;
             if (categories.Length == 0 && publishingtypes.Length == 0 && covertypes.Length == 0 && booktypes.Length == 0 && string.IsNullOrEmpty(search))
-                return View(allBooks);
+                foundBooks = allBooks;
+
+            double theCount = foundBooks.Count;
+            double divisor = 6;
+            int numberOfPages = int.Parse(Math.Ceiling(theCount / divisor).ToString());
+
+            ViewBag.activePage = activePage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+
+            allBooks = allBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
+
             return View(foundBooks);
         }
 
@@ -135,134 +175,6 @@ namespace Bookflix.Controllers
             var includedCategories = categories.Where(i => book.Categories.Any(x => x.CategoryID == i.ID)).ToList();
             ViewBag.Categories = includedCategories;
             return PartialView("_DetailsPopUp", book);
-        }
-
-        // GET: Books/Create
-        public IActionResult Create()
-        {
-            ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name");
-            ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name");
-            return View();
-        }
-
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageFile,StockNo,PublisherID,AuthorID")] Book book)
-        {
-            if (ModelState.IsValid)
-            {
-                string wwwRootPath = WebHostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(book.ImageFile.FileName);
-                string extention = Path.GetExtension(book.ImageFile.FileName);
-                book.ImageName = fileName = fileName + book.ISBN.ToString() + extention;
-                string path = Path.Combine(wwwRootPath + "/img/books-img/", fileName);
-
-                using (FileStream fs = new FileStream(path, FileMode.Create))
-                {
-                    await book.ImageFile.CopyToAsync(fs);
-                }
-
-                BookRepo.Insert(book);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
-            ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
-            return View(book);
-        }
-
-        // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = BookRepo.GetDetails(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
-            ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
-            return View(book);
-        }
-
-        // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageName,StockNo,PublisherID,AuthorID")] Book book)
-        {
-            if (id != book.ISBN)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-
-                    BookRepo.Update(id, book);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookExists(book.ISBN))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
-            ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
-            return View(book);
-        }
-
-        // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = BookRepo.GetDetails(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return View(book);
-        }
-
-        // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var book = BookRepo.GetDetails(id);
-            var imagePath = Path.Combine(WebHostEnvironment.WebRootPath, "img/books-img", book.ImageName);
-
-            if (System.IO.File.Exists(imagePath))
-                System.IO.File.Delete(imagePath);
-
-            BookRepo.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool BookExists(int id)
-        {
-            return BookRepo.Exists(id);
         }
     }
 }

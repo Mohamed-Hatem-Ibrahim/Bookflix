@@ -2,9 +2,9 @@
 {
     public enum BookType
     {
-        ShortyStory,
+        ShortStory,
         Novel,
-        Book,
-        Novellas
+        Novellas,
+        Book
     }
 }

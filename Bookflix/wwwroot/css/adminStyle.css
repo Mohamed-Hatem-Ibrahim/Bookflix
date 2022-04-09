@@ -120,3 +120,56 @@
     text-decoration: none;
     color: #858585;
 }
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+}
+
+    .cards h1 {
+        color: #557B83;
+    }
+
+    .cards span {
+        color: #565656;
+    }
+
+.card-single {
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+    .card-single div:last-child span {
+        font-size: 3rem;
+        color: #1abc9c;
+    }
+
+    .card-single:last-child {
+        background: #1abc9c;
+    }
+
+        .card-single:last-child h1, .card-single:last-child div:first-child span, .card-single:last-child div:last-child span {
+            color: #fff;
+        }
+
+.Inventory {
+    /*margin-left: 4rem;*/
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+/*.most-purchase {
+  margin-left: 4rem;
+}
+*/
+.Dashboard-box-shadow {
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+}

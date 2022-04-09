@@ -1,0 +1,503 @@
+﻿@model IEnumerable<Bookflix.Models.Book>
+
+
+@{
+    //number of books in inventory
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Select( x => x.Title ).ToList() );  
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Select( x => x.StockNo ).ToList() );  
+    //most selling books
+    var XLabels2 = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Select( x => x.Title ).ToList() );  
+    var YValues2 = Newtonsoft.Json.JsonConvert.SerializeObject( ViewData["total_amount_each_book"] ) ;  
+    //transaction
+    var XLabels3 = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Select( x => x.Title ).ToList() );  
+    var YValues3 = Newtonsoft.Json.JsonConvert.SerializeObject( ViewData["allYears"] );  
+    ViewData["Title"] = "Dashboard";
+
+}  
+@{
+    var latestOrders = ViewData["orders"] as List<OrderItem>;
+    var x = latestOrders.FirstOrDefault();
+    //top 3
+    var t3 = 0;
+    var mostSellingBook = ViewData["total_amount_each_book"] as IList<int>;
+    var mostSellingBookIndex = 0;
+}
+
+<div class="Info">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cards">
+                    @*<div class="col-md-3">*@
+                        <div class="card-single">
+                            <div>
+                                <h1>@ViewData["userCount"]</h1>
+                                <span>Customers</span>
+                            </div>
+                            <div>
+                                <span class="las la-users"></span>
+                            </div>
+                        </div>
+
+                    @*</div>*@
+                    @*<div class="col-md-3">*@
+                        <div class="card-single">
+                            <div>
+                                <h1>@ViewData["booksCount"]</h1>
+                                <span>Books</span>
+                            </div>
+                            <div>
+                                <span class="las la-book"></span>
+                            </div>
+                        </div>
+
+                    @*</div>*@
+                    @*<div class="col-md-3">*@
+                        <div class="card-single">
+                            <div>
+                                <h1>@ViewData["ordersCount"]</h1>
+                                <span>Orders</span>
+                            </div>
+                            <div>
+                                <span class="las la-shopping-bag"></span>
+                            </div>
+                        </div>
+
+                    @*</div>*@
+                    @*<div class="col-md-3">*@
+                        <div class="card-single">
+                            <div>
+                                <h1>$@ViewData["revenue"]</h1>
+                                <span>Revenue</span>
+                            </div>
+                            <div>
+                                <span class="lab la-google-wallet"></span>
+                            </div>
+                        </div>
+
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+    
+    <div class="Inventory">
+        <div data="container">
+            <div class=row>
+                <div class="col-md-5 offset-1">
+                    <div class="box-body">  
+                        <div class="chart-container">  
+                            @*<canvas id="chart" style="width:100%; height:500px"></canvas>  *@
+                            <canvas id="chart" style="height:300px"></canvas>  
+                        </div>  
+                    </div>
+                 </div>
+                 <div class="col-md-6 ">
+                     @*<ul>
+                        @foreach (var ord in ViewData["orders"] as IList<OrderItem>)
+                        {
+                            <li>
+                                @ord.Amount
+                            </li>
+                            <li>
+                                @ord.Price
+                            </li>
+                        }
+                        </ul>*@
+                            <h1 class="text-center">Latest Orders</h1>
+                            <div class="d-flex">
+                                <table class="table table-bordered Dashboard-box-shadow">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            @Html.DisplayNameFor(q=>x.Amount)
+                                        </th>
+                                        <th class="text-center">
+                                            @Html.DisplayNameFor(q=>x.Price)
+                                        </th>
+                                        <th class="text-center">
+                                            @Html.DisplayNameFor(q=>x.BookId)
+                                        </th>
+                                        <th class="text-center">
+                                            @Html.DisplayNameFor(q=>x.OrderId)
+                                        </th>
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            @foreach (var item in ViewData["orders"] as IList<OrderItem> ) 
+                             {
+                                 @if(t3==2){
+                                    break;
+
+                                }
+                                t3++;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BookId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderId)
+                                    </td>
+                                    
+                                </tr>
+                            }
+                                </tbody>
+                        </table>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <div class="most-purchase">
+        <div data="container">
+            <div class=row>
+                <div class="col-md-5 offset-1">
+                    <div class="box-body">  
+                        <div class="chart-container">  
+                            @*<canvas id="chart" style="width:100%; height:500px"></canvas>  *@
+                            <canvas id="chart2" style="height:300px"></canvas>  
+                        </div>  
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                     @*<p>total_amount_each_book</p>
+                     <ul>
+                        @foreach (var ord in ViewData["total_amount_each_book"] as IList<int>)
+                        {
+                            <li>
+                                @Html.DisplayNameFor(model => model.ISBN):
+                                @Html.DisplayNameFor(model => model.Title):
+                                :@ord
+                            </li>
+                            
+                        }
+                        </ul>*@
+                        <ul>
+                        @*@foreach (var ord in ViewData["allYears"] as IList<int>)
+                        {
+                            <li>
+                                @ord
+                            </li>
+                            
+                        }*@
+                        </ul>
+                        <h1 class="text-center">Most Selling Books</h1>
+                        <div class="d-flex">
+                            <table class="table table-bordered Dashboard-box-shadow">
+                    <thead>
+						<tr>
+                            <th class="text-center">
+								@Html.DisplayNameFor(model => model.ISBN)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Title)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Price)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.StockNo)
+							</th>
+							@*<th class="text-center">
+								@Html.DisplayNameFor(model => model.Publisher)
+							</th>
+							<th class="text-center">
+								@Html.DisplayNameFor(model => model.Author)
+							</th>*@
+							<th>Num of purchases</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Model)
+						{
+                            @if(mostSellingBook[mostSellingBookIndex]==0)
+                            {
+                                        break;
+                            }
+							<tr>
+                                <td>
+									@Html.DisplayFor(modelItem => item.ISBN)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Title)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Price)
+								</td>
+								
+								<td>
+									@Html.DisplayFor(modelItem => item.StockNo)
+								</td>
+								@*<td>
+									@Html.DisplayFor(modelItem => item.Publisher.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Author.Name)
+								</td>*@
+								<td>
+                                    @mostSellingBook[mostSellingBookIndex]
+                                </td>
+                              </tr>
+                                    mostSellingBookIndex++;
+                                }
+					</tbody>
+                    </table>
+                    
+                    </div>
+    
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <div class="Transaction">
+        <div data="container">
+            <div class=row>
+                <div class="col-md-10 offset-1">
+                    <div class="box-body">  
+                        <div class="chart-container">  
+                            <canvas id="chart3" style="height:300px"></canvas>  
+                        </div>  
+                    </div>
+                 </div>
+                 
+             </div>
+        </div>
+    </div>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>  
+  
+<script type="text/javascript">  
+        $(function () {  
+    var chartName = "chart";  
+        var ctx = document.getElementById(chartName).getContext('2d');  
+        var data = {  
+                labels: @Html.Raw(XLabels),  
+                datasets: [{  
+                    label: "Book Inventory Chart",  
+                    backgroundColor: [  
+                        'rgba(255, 99, 132, 0.2)',  
+                        'rgba(54, 162, 235, 0.2)',  
+                        'rgba(255, 206, 86, 0.2)',  
+                        'rgba(75, 192, 192, 0.2)',  
+                        'rgba(153, 102, 255, 0.2)',  
+                        'rgba(255, 159, 64, 0.2)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderColor: [  
+                        'rgba(255,99,132,1)',  
+                        'rgba(54, 162, 235, 1)',  
+                        'rgba(255, 206, 86, 1)',  
+                        'rgba(75, 192, 192, 1)',  
+                        'rgba(153, 102, 255, 1)',  
+                        'rgba(255, 159, 64, 1)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderWidth: 1,  
+                    data: @Html.Raw(YValues)  
+    }]  
+            };  
+  
+var options = {  
+                maintainAspectRatio: false,  
+                scales: {  
+                    yAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: true,  
+                            color: "rgba(255,99,164,0.2)"  
+                        }  
+}],  
+                    xAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: false  
+                        }  
+                    }]  
+                }  
+            };  
+  
+       var myChart = new  Chart(ctx, {  
+                options: options,  
+                data: data,  
+                type:'bar'  
+  
+            });  
+        });  
+</script>  
+
+<script type="text/javascript">  
+        $(function () {  
+    var chartName = "chart2";  
+        var ctx = document.getElementById(chartName).getContext('2d');  
+        var data = {  
+                labels: @Html.Raw(XLabels2),  
+                datasets: [{  
+                    label: "Selling book Chart",  
+                    backgroundColor: [  
+                        'rgba(255, 99, 132, 0.2)',  
+                        'rgba(54, 162, 235, 0.2)',  
+                        'rgba(255, 206, 86, 0.2)',  
+                        'rgba(75, 192, 192, 0.2)',  
+                        'rgba(153, 102, 255, 0.2)',  
+                        'rgba(255, 159, 64, 0.2)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderColor: [  
+                        'rgba(255,99,132,1)',  
+                        'rgba(54, 162, 235, 1)',  
+                        'rgba(255, 206, 86, 1)',  
+                        'rgba(75, 192, 192, 1)',  
+                        'rgba(153, 102, 255, 1)',  
+                        'rgba(255, 159, 64, 1)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderWidth: 1,  
+                    data: @Html.Raw(YValues2)  
+    }]  
+            };  
+  
+            var options = {  
+                maintainAspectRatio: false,  
+                scales: {  
+                    yAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: true,  
+                            color: "rgba(255,99,164,0.2)"  
+                        }  
+}],  
+                    xAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: false  
+                        }  
+                    }]  
+                }  
+            };  
+  
+       var myChart = new  Chart(ctx, {  
+                options: options,  
+                data: data,  
+                type:'pie'  
+  
+            });  
+        });  
+</script>
+
+@*<script type="text/javascript">  
+        $(function () {  
+    var chartName = "chart3";  
+        var ctx = document.getElementById(chartName).getContext('2d');  
+        var data = {  
+                labels: @Html.Raw(XLabels3),  
+                datasets: [{  
+                    label: "Transaction Chart",  
+                    backgroundColor: [  
+                        'rgba(255, 99, 132, 0.2)',  
+                        'rgba(54, 162, 235, 0.2)',  
+                        'rgba(255, 206, 86, 0.2)',  
+                        'rgba(75, 192, 192, 0.2)',  
+                        'rgba(153, 102, 255, 0.2)',  
+                        'rgba(255, 159, 64, 0.2)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderColor: [  
+                        'rgba(255,99,132,1)',  
+                        'rgba(54, 162, 235, 1)',  
+                        'rgba(255, 206, 86, 1)',  
+                        'rgba(75, 192, 192, 1)',  
+                        'rgba(153, 102, 255, 1)',  
+                        'rgba(255, 159, 64, 1)',  
+                        'rgba(255, 0, 0)',  
+                        'rgba(0, 255, 0)',  
+                        'rgba(0, 0, 255)',  
+                        'rgba(192, 192, 192)',  
+                        'rgba(255, 255, 0)',  
+                        'rgba(255, 0, 255)'  
+                    ],  
+                    borderWidth: 1,  
+                    data: @Html.Raw(YValues3)  
+    }]  
+            };  
+  
+var options = {  
+                maintainAspectRatio: false,  
+                scales: {  
+                    yAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: true,  
+                            color: "rgba(255,99,164,0.2)"  
+                        }  
+}],  
+                    xAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            beginAtZero: true  
+                        },  
+                        gridLines: {  
+                            display: false  
+                        }  
+                    }]  
+                }  
+            };  
+  
+       var myChart = new  Chart(ctx, {  
+                options: options,  
+                data: data,  
+                type:'line'  
+  
+            });  
+        });  
+</script>*@  
