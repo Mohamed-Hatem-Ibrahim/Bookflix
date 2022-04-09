@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Book>
 
 @{
-    ViewData["Title"] = "List of Movies";
+    ViewData["Title"] = "Books";
     var numOfPages = (int)ViewBag.NumberOfPages;
     var activePage = (int)ViewBag.activePage;
     var categories = (List<SelectListItem>)ViewBag.categories;
@@ -20,12 +20,11 @@
                         <div class="card-header btn" id="headingOne"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <h5 class="mb-0">
                                     Book Type
-                                @*<button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                </button>*@
+                                </button>
                             </h5>
                         </div>
 
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body">
                                 @foreach (var item in booktypes)
                                 {
@@ -178,31 +177,31 @@
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script>
 
-        (function () {
-            var TeamDetailPostBackURL = '/Book/Details';
-            $(".viewDetailsBtn").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                var options = { "backdrop": true, keyboard: true };
-                $.ajax({
-                    type: "GET",
-                    url: TeamDetailPostBackURL,
-                    contentType: "application/json; charset=utf-8",
-                    data: { "Id": id },
-                    datatype: "json",
-                    success: function (data) {
-                        $('#detailsModal').html(data);
-                        $('#bookDetails').modal(options);
-                        $('#bookDetails').modal('show');
+    (function () {
+        var TeamDetailPostBackURL = '/Book/Details';
+        $(".viewDetailsBtn").click(function () {
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": true, keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    $('#detailsModal').html(data);
+                    $('#bookDetails').modal(options);
+                    $('#bookDetails').modal('show');
 
-                    },
-                    error: function () {
-                        alert("Dynamic content load failed.");
-                    }
-                });
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
             });
-        }());
+        });
+    }());
 
-    </script>
+</script>
 }
 @*@await Html.PartialAsync("_CreateItem", "Movies") *@
