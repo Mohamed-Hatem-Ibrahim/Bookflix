@@ -45,41 +45,39 @@
                     <div class="classynav">
                         <ul>
                             <li class="megamenu-item">
-                                <a href="#">Shop</a>
+                                <a href="#"><i class="bi bi-cart"></i> Shop</a>
                                 <div class="megamenu">
+
                                     <ul class="single-mega cn-col-4">
-                                        <li class="title">Women's Collection</li>
-                                        <li><a href="#">Dresses</a></li>
-                                        <li><a href="#">Blouses &amp; Shirts</a></li>
-                                        <li><a href="#">T-shirts</a></li>
-                                        <li><a href="#">Rompers</a></li>
-                                        <li><a href="#">Bras &amp; Panties</a></li>
+                                        <li class="title">Book Types</li>
+                                        <li><a href="/Book/Index/?booktypess=ShortStory" >Short Stories</a></li>
+                                        <li><a href="/Book/Index/?booktypess=Novel">Novels</a></li>
+                                        <li><a href="/Book/Index/?booktypess=Novellas">Novellas</a></li>
+                                        <li><a href="/Book/Index/?booktypess=Book" >Books</a></li>
                                     </ul>
                                     <ul class="single-mega cn-col-4">
-                                        <li class="title">Men's Collection</li>
-                                        <li><a href="#">T-Shirts</a></li>
-                                        <li><a href="#">Polo</a></li>
-                                        <li><a href="#">Shirts</a></li>
-                                        <li><a href="#">Jackets</a></li>
-                                        <li><a href="#">Trench</a></li>
+                                        <li class="title">Publishing Types</li>
+                                        <li><a href="/Book/Index/?publishingtypess=Traditional">Traditional</a></li>
+                                        <li><a href="/Book/Index/?publishingtypess=Self">Self</a></li>
+                                        <li><a href="/Book/Index/?publishingtypess=Joint">Joint</a></li>
+                                        <li><a href="/Book/Index/?publishingtypess=Vanity">Vanity</a></li>
                                     </ul>
                                     <ul class="single-mega cn-col-4">
-                                        <li class="title">Kid's Collection</li>
-                                        <li><a href="#">Dresses</a></li>
-                                        <li><a href="#">Shirts</a></li>
-                                        <li><a href="#">T-shirts</a></li>
-                                        <li><a href="#">Jackets</a></li>
-                                        <li><a href="#">Trench</a></li>
+                                        <li class="title">Book Cover Types</li>
+                                        <li><a href="/Book/Index/?covertypess=Softcover">Soft Cover</a></li>
+                                        <li><a href="/Book/Index/?covertypess=HardcoverWithImageWrap">Hard Cover With Image Wrap</a></li>
+                                        <li><a href="/Book/Index/?covertypess=HardcoverWithDustJacket">Hard Cover With Dust Jacket</a></li>
                                     </ul>
                                     <div class="single-mega cn-col-4">
-                                        <img src="/img/bg-img/bg-6.jpg" alt="">
+                                        <img src="/img/Logo.png" alt="">
                                     </div>
+
                                 </div>
                                 <span class="dd-trigger"></span>
                                 <span class="dd-arrow"></span>
                             </li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="/Home/About"><i class="bi bi-info-circle"></i> About</a></li>
+                            <li><a href="/Home/ContactUs"><i class="bi bi-telephone"></i> Contact</a></li>
                             @if (User.IsInRole("Admin") && User.Identity.IsAuthenticated)
                             {
                                 <li class="cn-dropdown-item has-down pr12">

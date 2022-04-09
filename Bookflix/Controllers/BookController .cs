@@ -74,11 +74,21 @@ namespace Bookflix.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int activePage = 1)
+        public async Task<IActionResult> Index(string[] publishingtypess, string[] covertypess, string[] booktypess, int activePage = 1)
         {
-            var booktypes = GetEnumValues(typeof(BookType));
-            var covertypes = GetEnumValues(typeof(CoverType));
-            var publishingtypes = GetEnumValues(typeof(PublishingType));
+            List<Book> foundBooks = new();
+            List<Book> allBooks = BookRepo.GetAll();
+            foundBooks.AddRange(allBooks.Where(x => booktypess.Any(bt => bt.ToString() == x.BookType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => covertypess.Any(ct => ct.ToString() == x.CoverType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => publishingtypess.Any(pt => pt.ToString() == x.PublishingType.ToString())).ToList());
+            foundBooks = foundBooks.Distinct().ToList();
+            if (publishingtypess.Length == 0 && covertypess.Length == 0 && booktypess.Length == 0)
+                foundBooks = allBooks;
+
+
+            var booktypes = GetEnumValues(typeof(BookType), booktypess);
+            var covertypes = GetEnumValues(typeof(CoverType), covertypess);
+            var publishingtypes = GetEnumValues(typeof(PublishingType), publishingtypess);
             var categories = new List<SelectListItem>();
             foreach (var category in CategoryRepo.GetAll())
             {
@@ -94,20 +104,17 @@ namespace Bookflix.Controllers
             ViewBag.publishingtypes = publishingtypes;
             ViewBag.categories = categories;
 
-            //save number of pages in session
-            List<Book> allBooks = BookRepo.GetAll();
-            double theCount = allBooks.Count;
+            double theCount = foundBooks.Count;
             double divisor = 6;
             int numberOfPages = int.Parse(Math.Ceiling(theCount / divisor).ToString());
-            //HttpContext.Session.SetInt32(NumberOfPages, allBooks.Count / numberOfPages);
 
             ViewBag.activePage = activePage;
             ViewBag.NumberOfPages = numberOfPages;
 
+            
+            foundBooks = foundBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
 
-            allBooks = allBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
-
-            return View(allBooks);
+            return View(foundBooks);
         }
 
         //[ActionName("IndexSearch")]
