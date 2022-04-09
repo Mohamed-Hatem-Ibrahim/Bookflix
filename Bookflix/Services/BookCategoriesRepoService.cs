@@ -13,7 +13,13 @@ namespace Bookflix.Services
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            List<BookCategory> list = new();
+            var all = context.BookCategories.AsNoTracking().ToList();
+            foreach (var bookcat in all)
+                if(bookcat.ISBN == id)
+                    list.Add(bookcat);
+            context.BookCategories.RemoveRange(list);
+            context.SaveChanges();
         }
 
         public void DeleteComposite(int id1, int id2)
@@ -55,7 +61,7 @@ namespace Bookflix.Services
         {
             if (t == null)
                 return;
-            context.BookCategories.Add(t);
+            context.BookCategories.AddAsync(t);
             context.SaveChanges();
         }
 

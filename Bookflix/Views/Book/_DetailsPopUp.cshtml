@@ -1,4 +1,7 @@
 ﻿@model Bookflix.Models.Book
+@{
+    var Cats = (List<Category>)ViewBag.Categories;
+}
 
 <div class="modal fade" id="bookDetails" tabindex="-1" role="dialog" aria-labelledby="bookDetailsTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -17,14 +20,18 @@
                 </div>
 
                 <div class="book-details-body">
-                    <span class="data"><b>Author:</b> @Model.Author.Name</span>
-                    <span class="data"><b>Publisher:</b> @Model.Publisher.Name </span>
+                    <span class="data"><b>Author:</b> @Model.Author?.Name</span>
+                    <span class="data"><b>Publisher:</b> @Model.Publisher?.Name </span>
                     <span class="data"><b>Publisher Year:</b> @Model.PublicationYear.Day/@Model.PublicationYear.Month/@Model.PublicationYear.Year </span>
                     <span class="data">
                         <b>Categories:</b>
+                        @{
+
+                        }
                         @for (var i = 0; i < Model?.Categories.Count; i++)
                         {
-                            <span style="padding:5px; font-size:10px; border: 1px solid black; border-radius:10px;">@Model.Categories.ToList()[i]</span>
+                            var cat = Cats.FirstOrDefault(x => x.ID == (Model.Categories.ToList()[i]).CategoryID);
+                            <span style="padding:5px; font-size:10px; border: 1px solid black; border-radius:10px;">@cat.Name</span>
                         }
                     </span>
                     <span class="data"><b>Pages:</b> @Model.PagesNo </span>
@@ -39,6 +46,10 @@
                             <span class="text-danger">Not Available</span>
                         }
                     </span>
+                    <span class="data"><b>Cover Type:</b> @Model.CoverType </span>
+                    <span class="data"><b>Publishing Type:</b> @Model.PublishingType </span>
+                    <span class="data"><b>Book Type:</b> @Model.BookType </span>
+
 
                     <span class="data"><b>Price:</b>  @Model.Price EGP.</span>
                 </div>

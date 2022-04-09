@@ -4,32 +4,87 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@*<h1>Index</h1>
 
-<p>
+    <p>
     <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    </p>
+    <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+    <th>
+    @Html.DisplayNameFor(model => model.Name)
+    </th>
+    <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+    @foreach (var item in Model) {
+    <tr>
+    <td>
+    @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+    </td>
+    </tr>
+    }
     </tbody>
-</table>
+    </table>
+*@
+
+@*change class name*@
+
+<div class="Authors-Index">
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h1 class="text-center font-h1">Categories</h1>
+            <p class="text-center">
+                <a class="anchor-new" asp-action="Create">
+                    <i class="bi bi-plus"> </i> Add New
+                </a>
+            </p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+                            <td>
+                                <p>
+                                    <a asp-action="Edit" asp-route-id="@item.ID" class="anchor-Edit">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+
+                                    <a asp-action="Details" asp-route-id="@item.ID" class="anchor-Edit">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+
+                                    <a asp-action="Delete" asp-route-id="@item.ID" class="anchor-Delete">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

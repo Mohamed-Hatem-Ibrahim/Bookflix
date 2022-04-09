@@ -2,12 +2,112 @@
 
 @{
     ViewData["Title"] = "List of Movies";
+    var categories = (List<SelectListItem>)ViewBag.categories;
+    var booktypes = (List<SelectListItem>)ViewBag.booktypes;
+    var covertypes = (List<SelectListItem>)ViewBag.covertypes;
+    var publishingtypes = (List<SelectListItem>)ViewBag.publishingtypes;
 }
+<div class=row>
+    <div class="col-3 col">
+        <form asp-action="Index" method="post">
 
-<div class="container row justify-content-center col-8 p-2" id="test">
-    @foreach (var item in Model)
-    {
-        <div class="card book-card ml-5" style="width: 16rem; height:fit-content;">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Book Type
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            @foreach (var item in booktypes)
+                            {
+                                <div>
+                                    <input type="checkbox" id="@item.Value" name="booktypes" checked="@item.Selected" value="@item.Value" class="">
+                                    <label for="@item.Value">@item.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                CoverType
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            @foreach (var item in covertypes)
+                            {
+                                <div>
+                                    <input type="checkbox" id="@item.Value" name="covertypes" checked="@item.Selected" value="@item.Value" class="">
+                                    <label for="@item.Value">@item.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Publishing type
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            @foreach (var item in publishingtypes)
+                            {
+                                <div>
+                                    <input type="checkbox" id="@item.Value" name="publishingtypes" checked="@item.Selected" value="@item.Value" class="">
+                                    <label for="@item.Value">@item.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Categories
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                        <div class="card-body">
+                            @foreach (var item in categories)
+                            {
+                                <div>
+                                    <input type="checkbox" id="@item.Value" name="categories" checked="@item.Selected" value="@item.Value" class="">
+                                    <label for="@item.Value">@item.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <input type="submit" value="Apply Filers" class="btn btn-success btn-block" />
+                <input type="submit" value="Cancel" class="btn btn-secondary btn-block" />
+            </div>
+        </form>
+    </div>
+
+    <div class="container row justify-content-center col-8 p-2" id="test">
+        @foreach (var item in Model)
+        {
+            <div class="card book-card ml-5" style="width: 16rem; height:fit-content;">
 
             <div class="book-card text-center">
                 <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
@@ -35,10 +135,10 @@
 
 @section scripts
 {
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
 
         (function () {
             var TeamDetailPostBackURL = '/Book/Details';
@@ -57,14 +157,14 @@
                         $('#bookDetails').modal(options);
                         $('#bookDetails').modal('show');
 
-                    },
-                    error: function () {
-                        alert("Dynamic content load failed.");
-                    }
-                });
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
             });
-        }());
+        });
+    }());
 
-    </script>
+</script>
 }
 @*@await Html.PartialAsync("_CreateItem", "Movies") *@
