@@ -2,11 +2,13 @@
 using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookflix.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class DashboardController : Controller
     {
         public IRepository<Book> BookRepo { get; set; }
