@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookflix.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BooksController : Controller
     {
         public IRepository<Book> BookRepo { get; set; }
@@ -78,7 +80,7 @@ namespace Bookflix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageFile,StockNo,PublisherID,AuthorID")] Book book, string[] cats)
+        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageFile,StockNo,PublisherID,AuthorID,BookType,PublishingType,CoverType")] Book book, string[] cats)
         {
             if (ModelState.IsValid)
             {
@@ -132,6 +134,17 @@ namespace Bookflix.Controllers
             }
             ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
             ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
+            var Categories = new List<SelectListItem>();
+            foreach (var item in CategoryRepo.GetAll())
+            {
+                Categories.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = book.Categories.Any(c => c.CategoryID == item.ID)
+                });
+            }
+            ViewData["CategoryIDs"] = Categories;
             return View(book);
         }
 
@@ -140,7 +153,7 @@ namespace Bookflix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageName,StockNo,PublisherID,AuthorID")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Description,PublicationYear,Price,PagesNo,ImageName,StockNo,PublisherID,AuthorID,BookType,PublishingType,CoverType")] Book book, string[] cats)
         {
             if (id != book.ISBN)
             {
@@ -151,8 +164,8 @@ namespace Bookflix.Controllers
             {
                 try
                 {
-
                     BookRepo.Update(id, book);
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -165,10 +178,30 @@ namespace Bookflix.Controllers
                         throw;
                     }
                 }
+                finally
+                {
+                    //BookCateRepo.Delete(id);
+                    //foreach (var c in cats)
+                    //{
+                    //    var temp = new BookCategory { ISBN = book.ISBN, CategoryID = int.Parse(c) };
+                    //    BookCateRepo.Insert(temp);
+                    //}
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorID"] = new SelectList(AuthorRepo.GetAll(), "ID", "Name", book.AuthorID);
             ViewData["PublisherID"] = new SelectList(PubliserRepo.GetAll(), "ID", "Name", book.PublisherID);
+            var Categories = new List<SelectListItem>();
+            foreach (var item in CategoryRepo.GetAll())
+            {
+                Categories.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = book.Categories.Any(c => c.CategoryID == item.ID)
+                });
+            }
+            ViewData["CategoryIDs"] = Categories;
             return View(book);
         }
 

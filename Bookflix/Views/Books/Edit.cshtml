@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var categories = (List<SelectListItem>)ViewData["CategoryIDs"];
+
 }
 
 
@@ -14,7 +16,7 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
-                
+
                         <img src="@("~/img/books-img/"+Model.ImageName)" asp-append-version="true"></img>
                         <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -48,7 +50,7 @@
                                 <label asp-for="ImageFile" class="control-label"></label>
                                 <input asp-for="ImageFile" accept="image/*"/>
                                 <span asp-validation-for="ImageFile" class="text-danger"></span>
-                            </div>*@
+                                </div>*@
                             <div class="form-group">
                                 <label asp-for="StockNo" class="control-label"></label>
                                 <input asp-for="StockNo" class="form-control" />
@@ -65,9 +67,34 @@
                                 <span asp-validation-for="AuthorID" class="text-danger"></span>
                             </div>
                             <div class="form-group">
+                                <label asp-for="BookType" class="control-label"></label>
+                                <select asp-for="BookType" class="form-control" asp-items="Html.GetEnumSelectList<BookType>()"></select>
+                                <span asp-validation-for="BookType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CoverType" class="control-label"></label>
+                                <select asp-for="CoverType" class="form-control" asp-items="Html.GetEnumSelectList<CoverType>()"></select>
+                                <span asp-validation-for="CoverType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublishingType" class="control-label"></label>
+                                <select asp-for="PublishingType" class="form-control" asp-items="Html.GetEnumSelectList<PublishingType>()"></select>
+                                <span asp-validation-for="PublishingType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Categories" class="control-label"></label>
+                                @foreach (var item in categories)
+                                {
+                                    <div>
+                                        <input type="checkbox" id="@item.Value" name="cats" checked="@item.Selected" value="@item.Value" class="">
+                                        <label for="@item.Value">@item.Text</label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-primary" />
                                 <a class="Back-To-List" asp-action="Index">
-                                  <i class="bi bi-arrow-left"></i>Back to List
+                                    <i class="bi bi-arrow-left"></i>Back to List
                                 </a>
                             </div>
                         </form>
@@ -75,7 +102,9 @@
                 </div>
 
                 @section Scripts {
-                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
                 }
             </div>
         </div>

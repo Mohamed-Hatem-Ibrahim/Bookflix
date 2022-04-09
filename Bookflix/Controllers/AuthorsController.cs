@@ -1,9 +1,11 @@
 ﻿using Bookflix.Models;
 using Bookflix.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookflix.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AuthorsController : Controller
     {
         private IRepository<Author> Repository;

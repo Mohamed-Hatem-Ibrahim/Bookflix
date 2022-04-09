@@ -17,26 +17,103 @@ namespace Bookflix.Controllers
         public IRepository<Book> BookRepo { get; set; }
         public IRepository<Author> AuthorRepo { get; set; }
         public IRepository<Publisher> PubliserRepo { get; }
+        public IRepository<Category> CategoryRepo { get; set; }
         public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public BookController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IWebHostEnvironment webHostEnvironment)
+        public BookController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IRepository<Category> categoryRepo, IWebHostEnvironment webHostEnvironment)
         {
             BookRepo = _BookRepo;
             AuthorRepo = authorRepo;
             PubliserRepo = publiserRepo;
+            CategoryRepo = categoryRepo;
             WebHostEnvironment = webHostEnvironment;
         }
 
+        //string text = booktype.ToString();
+        //int num = (int)Enum.Parse(typeof(BookType), text);
         // GET: Books
+
+        private List<SelectListItem> GetEnumValues(Type type)
+        {
+            List<SelectListItem> values = new List<SelectListItem>();
+            foreach (var item in Enum.GetValues(type))
+            {
+                values.Add(new SelectListItem
+                {
+                    Text = item.ToString(),
+                    Value = item.ToString()
+                });
+            }
+            return values;
+        }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var booktypes = GetEnumValues(typeof(BookType));
+            var covertypes = GetEnumValues(typeof(CoverType));
+            var publishingtypes = GetEnumValues(typeof(PublishingType));
+            var categories = new List<SelectListItem>();
+            foreach (var category in CategoryRepo.GetAll())
+            {
+                categories.Add(new SelectListItem
+                {
+                    Text = category.Name,
+                    Value = category.ID.ToString(),
+                });
+            }
+
+            ViewBag.booktypes = booktypes;
+            ViewBag.covertypes = covertypes;
+            ViewBag.publishingtypes = publishingtypes;
+            ViewBag.categories = categories;
+
+            //save number of pages in session
+
+
             return View(BookRepo.GetAll());
         }
 
+        //[ActionName("IndexSearch")]
+        //public async Task<IActionResult> Index(string search)
+        //{
+        //    var foundBooks = BookRepo.GetAll().Where(x => x.Title.IndexOf(search?.Trim()?.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+        //    return View(foundBooks);
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> Index(string search)
+        public IActionResult Index(string[] categories, string[] publishingtypes, string[] covertypes, string[] booktypes, string search)
         {
-            var foundBooks = BookRepo.GetAll().Where(x => x.Title.IndexOf(search.Trim().ToLower(), StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+            List<Book> foundBooks = new();
+            var allBooks = BookRepo.GetAll();
+            foundBooks.AddRange(allBooks.Where(x => booktypes.Any(bt => bt.ToString() == x.BookType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => covertypes.Any(ct => ct.ToString() == x.CoverType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => publishingtypes.Any(pt => pt.ToString() == x.PublishingType.ToString())).ToList());
+            foundBooks.AddRange(allBooks.Where(x => categories.Any(c => x.Categories.Any(cx => cx.CategoryID.ToString() == c))).ToList());
+            if (search != null)
+                foundBooks.AddRange(allBooks.Where(x => x.Title.IndexOf(search?.Trim()?.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0).ToList());
+            foundBooks = foundBooks.Distinct().ToList();
+
+
+            var booktypesss = GetEnumValues(typeof(BookType));
+            var covertypesss = GetEnumValues(typeof(CoverType));
+            var publishingtypesss = GetEnumValues(typeof(PublishingType));
+            var categoriesss = new List<SelectListItem>();
+            foreach (var category in CategoryRepo.GetAll())
+            {
+                categoriesss.Add(new SelectListItem
+                {
+                    Text = category.Name,
+                    Value = category.ID.ToString(),
+                });
+            }
+
+            ViewBag.booktypes = booktypesss;
+            ViewBag.covertypes = covertypesss;
+            ViewBag.publishingtypes = publishingtypesss;
+            ViewBag.categories = categoriesss;
+            if (categories.Length == 0 && publishingtypes.Length == 0 && covertypes.Length == 0 && booktypes.Length == 0 && string.IsNullOrEmpty(search))
+                return View(allBooks);
             return View(foundBooks);
         }
 
@@ -53,7 +130,9 @@ namespace Bookflix.Controllers
             {
                 return NotFound();
             }
-
+            var categories = CategoryRepo.GetAll();
+            var includedCategories = categories.Where(i => book.Categories.Any(x => x.CategoryID == i.ID)).ToList();
+            ViewBag.Categories = includedCategories;
             return PartialView("_DetailsPopUp", book);
         }
 

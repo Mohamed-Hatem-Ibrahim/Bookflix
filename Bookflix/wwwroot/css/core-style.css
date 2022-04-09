@@ -424,7 +424,7 @@ img {
 }
 
 .header_area .header-meta {
-    height: 85px;
+    height: 88px;
     position: relative;
     z-index: 1;
 }
@@ -2592,7 +2592,7 @@ img {
     z-index: 2;
     top: 80%;
     display: none;
-    left: 25%;
+    left: 22%;
     width: 150px;
     border: solid 1px white;
     background-color: #BF9270;

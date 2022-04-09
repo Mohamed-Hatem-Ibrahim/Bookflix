@@ -27,6 +27,17 @@ namespace Bookflix.Models
         [Required]
         public int PagesNo { get; set; }
 
+        [Required]
+        [EnumDataType(typeof(CoverType))]
+        public CoverType CoverType { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(BookType))]
+        public BookType BookType { get; set; }
+        [Required]
+        [EnumDataType(typeof(PublishingType))]
+        public PublishingType PublishingType { get; set; }
+
         public string? ImageName { get; set; }
 
         [NotMapped]

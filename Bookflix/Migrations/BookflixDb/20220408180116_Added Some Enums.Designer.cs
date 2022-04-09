@@ -4,6 +4,7 @@ using Bookflix.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations.BookflixDb
 {
     [DbContext(typeof(BookflixDbContext))]
-    partial class BookflixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220408180116_Added Some Enums")]
+    partial class AddedSomeEnums
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Book", b =>
@@ -97,7 +99,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasIndex("PublisherID");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Bookflix.Models.BookCategory", b =>
@@ -112,7 +114,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("BookCategories", (string)null);
+                    b.ToTable("BookCategories");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Category", b =>
@@ -130,7 +132,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Order", b =>
@@ -145,17 +147,13 @@ namespace Bookflix.Migrations.BookflixDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("OrderDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Bookflix.Models.OrderItem", b =>
@@ -184,7 +182,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Publisher", b =>
@@ -206,7 +204,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("ID");
 
-                    b.ToTable("Publishers", (string)null);
+                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("Bookflix.Models.SoldBook", b =>
@@ -219,7 +217,7 @@ namespace Bookflix.Migrations.BookflixDb
 
                     b.HasKey("BookISBN", "SellDate");
 
-                    b.ToTable("SoldBooks", (string)null);
+                    b.ToTable("SoldBooks");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Book", b =>

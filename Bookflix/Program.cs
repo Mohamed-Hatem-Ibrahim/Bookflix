@@ -21,13 +21,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => option.Sig
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDbContext<BookflixDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookflixConnection")));
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
