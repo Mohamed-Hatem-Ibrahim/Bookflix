@@ -14,6 +14,7 @@ namespace Bookflix.Services.Orders
             _dbContext = dbContext;
             Manager = userManager;
         }
+
         public List<Order> GetOrdersByUserIdAndRole(string UserId, string userRole)
         {
             var orders = _dbContext.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Book)
@@ -30,7 +31,7 @@ namespace Bookflix.Services.Orders
             return orders;
         }
 
-        public void StoreOrder(List<ShoppingCartItem> items, string userId, string userEmailAddress)
+        public async Task StoreOrder(List<ShoppingCartItem> items, string userId, string userEmailAddress)
         {
             var order = new Order()
             {
@@ -39,8 +40,8 @@ namespace Bookflix.Services.Orders
                 OrderDate = DateTime.Now
 
             };
-            _dbContext.Orders.Add(order);
-            _dbContext.SaveChanges();
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
 
             foreach (var item in items)
             {
@@ -51,11 +52,11 @@ namespace Bookflix.Services.Orders
                     OrderId = order.Id,
                     Price = item.Book.Price,
                 };
-                _dbContext.OrderItems.Add(orderItem);
+                await _dbContext.OrderItems.AddAsync(orderItem);
 
             }
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
