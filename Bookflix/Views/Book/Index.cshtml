@@ -109,36 +109,36 @@
         {
             <div class="card book-card ml-5" style="width: 16rem; height:fit-content;">
 
-            <div class="book-card text-center">
-                <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
-                <button href="javascript:void(1);" data-id="@item.ISBN" class="viewDetailsBtn book-card-btn">Quick Look</button>
-            </div>
+                <div class="book-card text-center">
+                    <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
+                    <button href="javascript:void(1);" data-id="@item.ISBN" class="viewDetailsBtn book-card-btn">Quick Look</button>
+                </div>
 
-            <div class="card-body book-card-body">
-                <h5 class="card-title">
-                    <span style="top: -0.5em; position:relative; font-size: 15px;">EGP</span>
-                    <span>@item.Price</span>
-                </h5>
-                <span style="font-size:16px">@item.Title</span>
-                <br>
-                <span class="book-card-description" style="font-size:16px;">
-                    @item.Description
-                </span>
+                <div class="card-body book-card-body">
+                    <h5 class="card-title">
+                        <span style="top: -0.5em; position:relative; font-size: 15px;">EGP</span>
+                        <span>@item.Price</span>
+                    </h5>
+                    <span style="font-size:16px">@item.Title</span>
+                    <br>
+                    <span class="book-card-description" style="font-size:16px;">
+                        @item.Description
+                    </span>
+                </div>
             </div>
+        }
+        <div id="detailsModal">
+
         </div>
-    }
-    <div id="detailsModal">
-
     </div>
 </div>
 
-
 @section scripts
 {
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
 
         (function () {
             var TeamDetailPostBackURL = '/Book/Details';
@@ -157,14 +157,14 @@
                         $('#bookDetails').modal(options);
                         $('#bookDetails').modal('show');
 
-                },
-                error: function () {
-                    alert("Dynamic content load failed.");
-                }
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
             });
-        });
-    }());
+        }());
 
-</script>
+    </script>
 }
 @*@await Html.PartialAsync("_CreateItem", "Movies") *@
