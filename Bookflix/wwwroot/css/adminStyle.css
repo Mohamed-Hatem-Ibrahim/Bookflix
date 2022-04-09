@@ -111,7 +111,9 @@
     color: #858585;
     position:absolute;
     right:5px;
-    bottom:22px;
+    bottom:0px;
+    right: 40px;
+    margin-top:50px;
 }
 
 .Back-To-List:hover {
