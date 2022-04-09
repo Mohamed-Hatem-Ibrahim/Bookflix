@@ -287,9 +287,9 @@ img {
     transition: opacity 0.5s;
 }
 
-.scrollUp:hover{
-    opacity: 60%;
-}
+    .scrollUp:hover {
+        opacity: 60%;
+    }
 
 .scrollUp-icon {
     width: 1rem;
@@ -331,7 +331,8 @@ img {
         letter-spacing: 3px;
         background-color: #BF9270;
     }
-    .essence-btn:active{
+
+    .essence-btn:active {
         box-shadow: none !important;
         border: none !important;
         -webkit-box-shadow: none !important;
@@ -351,16 +352,17 @@ img {
     background-color: none !important;
     letter-spacing: 0px;
     font-weight: 600;
-    box-shadow:none !important;
+    box-shadow: none !important;
 }
 
     .welcome-btn, .welcome-btn:active {
         border: none !important;
         box-shadow: 1px 2px 5px 5px #f3e9dd !important;
     }
-    .welcome-btn h2 {
-        line-height: 1 !important;
-    }
+
+        .welcome-btn h2 {
+            line-height: 1 !important;
+        }
 
         .welcome-btn:hover, .welcome-btn:focus {
             color: #ffffff;
@@ -736,9 +738,17 @@ img {
 
     .right-side-cart-area .cart-content .cart-list .single-cart-item .product-image {
         position: relative;
+        height: 280px;
         z-index: 1;
         display: block;
     }
+
+        .right-side-cart-area .cart-content .cart-list .single-cart-item .product-image img {
+            max-height: 100%;
+            height: 100%;
+            max-width: 100%;
+            object-fit: fill;
+        }
 
         .right-side-cart-area .cart-content .cart-list .single-cart-item .product-image .cart-item-desc {
             position: absolute;
@@ -1553,9 +1563,11 @@ img {
     background-color: /*#252525*/ #E3CAA5;
     padding: 70px 0 60px;
 }
+
     .footer_area .single_widget_area .footer-logo a h1 {
         color: #000000;
     }
+
     .footer_area .single_widget_area .footer-logo a:hover {
         text-decoration: none !important;
     }
@@ -2587,7 +2599,7 @@ img {
     object-fit: fill;
 }
 
-.book-card-body{
+.book-card-body {
     height: 170px;
 }
 
