@@ -46,6 +46,7 @@ namespace Bookflix.Controllers
             }
             return values;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {

@@ -304,6 +304,10 @@ img {
     }
 }
 
+.mybtnhatem {
+    background-color: #BF9270 !important;
+}
+
 /* Essence Button */
 .essence-btn {
     align-items: center;
