@@ -738,6 +738,10 @@ img {
     }
 }
 
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link{
+    background-color: #BF9270 !important;
+}
 .right-side-cart-area .cart-content .cart-list .single-cart-item {
     position: relative;
     z-index: 1;
