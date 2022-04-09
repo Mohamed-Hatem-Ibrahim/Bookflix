@@ -1093,13 +1093,19 @@ img {
 }
 
     .single-product-wrapper .product-img {
+        width: 90%;
+        height: 270px;
         position: relative;
         z-index: 1;
         overflow: hidden;
+        margin: auto;
     }
 
         .single-product-wrapper .product-img img {
             width: 100%;
+            height: 100%;
+            object-fit: fill;
+            max-height: 100%;
             -webkit-transition-duration: 500ms;
             transition-duration: 500ms;
         }
@@ -2562,7 +2568,7 @@ img {
     background-color: #E3CAA5 !important;
 }
 
-#book-card-description {
+.book-card-description {
     display: block;
     white-space: nowrap;
     width: 100%;

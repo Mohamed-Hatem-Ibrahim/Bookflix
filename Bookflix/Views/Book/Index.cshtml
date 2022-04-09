@@ -109,10 +109,10 @@
         {
             <div class="card book-card ml-5" style="width: 16rem; height:fit-content;">
 
-                <div class="book-card">
-                    <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
-                    <button href="javascript:void(1);" data-id="@item.ISBN" id="viewDetailsBtn" class="viewDetailsBtn book-card-btn">Quick Look</button>
-                </div>
+            <div class="book-card">
+                <img class="card-img-top book-card-img" src="@("~/img/books-img/"+@item.ImageName)" asp-append-version="true" alt="@item.Title">
+                <button href="javascript:void(1);" data-id="@item.ISBN" class="viewDetailsBtn book-card-btn">Quick Look</button>
+            </div>
 
                 <div class="card-body book-card-body">
                     <h5 class="card-title">
@@ -121,7 +121,7 @@
                     </h5>
                     <span style="font-size:16px">@item.Title</span>
                     <br>
-                    <span id="book-card-description" style="font-size:16px;">
+                    <span class="book-card-description" style="font-size:16px;">
                         @item.Description
                     </span>
                 </div>
@@ -141,22 +141,22 @@
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script>
 
-    (function () {
-        var TeamDetailPostBackURL = '/Book/Details';
-        $(".viewDetailsBtn").click(function () {
-            var $buttonClicked = $(this);
-            var id = $buttonClicked.attr('data-id');
-            var options = { "backdrop": true, keyboard: true };
-            $.ajax({
-                type: "GET",
-                url: TeamDetailPostBackURL,
-                contentType: "application/json; charset=utf-8",
-                data: { "Id": id },
-                datatype: "json",
-                success: function (data) {
-                    $('#detailsModal').html(data);
-                    $('#bookDetails').modal(options);
-                    $('#bookDetails').modal('show');
+        (function () {
+            var TeamDetailPostBackURL = '/Book/Details';
+            $(".viewDetailsBtn").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": true, keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#detailsModal').html(data);
+                        $('#bookDetails').modal(options);
+                        $('#bookDetails').modal('show');
 
                 },
                 error: function () {
