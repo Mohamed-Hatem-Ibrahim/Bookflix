@@ -14,19 +14,30 @@ namespace Bookflix.Controllers
 {
     public class BookController : Controller
     {
+        private const string NumberOfPages = "NumberOfPages";
+        private const string PageNumber = "PageNumber";
         public IRepository<Book> BookRepo { get; set; }
         public IRepository<Author> AuthorRepo { get; set; }
         public IRepository<Publisher> PubliserRepo { get; }
         public IRepository<Category> CategoryRepo { get; set; }
         public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public BookController(IRepository<Book> _BookRepo, IRepository<Author> authorRepo, IRepository<Publisher> publiserRepo, IRepository<Category> categoryRepo, IWebHostEnvironment webHostEnvironment)
+        public BookController(
+            IRepository<Book> _BookRepo,
+            IRepository<Author> authorRepo,
+            IRepository<Publisher> publiserRepo,
+            IRepository<Category> categoryRepo,
+            IWebHostEnvironment webHostEnvironment)
         {
             BookRepo = _BookRepo;
             AuthorRepo = authorRepo;
             PubliserRepo = publiserRepo;
             CategoryRepo = categoryRepo;
             WebHostEnvironment = webHostEnvironment;
+            //if (!HttpContext.Session.Keys.Contains(PageNumber))
+            //    HttpContext.Session.SetInt32(PageNumber, 1);
+            //else
+            //    HttpContext.Session.SetInt32(PageNumber, HttpContext.Session.GetInt32(PageNumber).Value + 1);
         }
 
         //string text = booktype.ToString();
@@ -47,8 +58,23 @@ namespace Bookflix.Controllers
             return values;
         }
 
+        private List<SelectListItem> GetEnumValues(Type type, string[] existing)
+        {
+            List<SelectListItem> values = new List<SelectListItem>();
+            foreach (var item in Enum.GetValues(type))
+            {
+                values.Add(new SelectListItem
+                {
+                    Text = item.ToString(),
+                    Value = item.ToString(),
+                    Selected = existing.Contains(item.ToString())
+                });
+            }
+            return values;
+        }
+
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int activePage = 1)
         {
             var booktypes = GetEnumValues(typeof(BookType));
             var covertypes = GetEnumValues(typeof(CoverType));
@@ -69,9 +95,19 @@ namespace Bookflix.Controllers
             ViewBag.categories = categories;
 
             //save number of pages in session
+            List<Book> allBooks = BookRepo.GetAll();
+            double theCount = allBooks.Count;
+            double divisor = 6;
+            int numberOfPages = int.Parse(Math.Ceiling(theCount / divisor).ToString());
+            //HttpContext.Session.SetInt32(NumberOfPages, allBooks.Count / numberOfPages);
+
+            ViewBag.activePage = activePage;
+            ViewBag.NumberOfPages = numberOfPages;
 
 
-            return View(BookRepo.GetAll());
+            allBooks = allBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
+
+            return View(allBooks);
         }
 
         //[ActionName("IndexSearch")]
@@ -82,7 +118,7 @@ namespace Bookflix.Controllers
         //}
 
         [HttpPost]
-        public IActionResult Index(string[] categories, string[] publishingtypes, string[] covertypes, string[] booktypes, string search)
+        public IActionResult Index(string[] categories, string[] publishingtypes, string[] covertypes, string[] booktypes, string search, int activePage = 1)
         {
 
             List<Book> foundBooks = new();
@@ -96,9 +132,9 @@ namespace Bookflix.Controllers
             foundBooks = foundBooks.Distinct().ToList();
 
 
-            var booktypesss = GetEnumValues(typeof(BookType));
-            var covertypesss = GetEnumValues(typeof(CoverType));
-            var publishingtypesss = GetEnumValues(typeof(PublishingType));
+            var booktypesss = GetEnumValues(typeof(BookType), booktypes);
+            var covertypesss = GetEnumValues(typeof(CoverType), covertypes);
+            var publishingtypesss = GetEnumValues(typeof(PublishingType), publishingtypes);
             var categoriesss = new List<SelectListItem>();
             foreach (var category in CategoryRepo.GetAll())
             {
@@ -106,6 +142,7 @@ namespace Bookflix.Controllers
                 {
                     Text = category.Name,
                     Value = category.ID.ToString(),
+                    Selected = categories.Any(x => x == category.ID.ToString())
                 });
             }
 
@@ -114,7 +151,19 @@ namespace Bookflix.Controllers
             ViewBag.publishingtypes = publishingtypesss;
             ViewBag.categories = categoriesss;
             if (categories.Length == 0 && publishingtypes.Length == 0 && covertypes.Length == 0 && booktypes.Length == 0 && string.IsNullOrEmpty(search))
-                return View(allBooks);
+                foundBooks = allBooks;
+
+            double theCount = foundBooks.Count;
+            double divisor = 6;
+            int numberOfPages = int.Parse(Math.Ceiling(theCount / divisor).ToString());
+            //HttpContext.Session.SetInt32(NumberOfPages, allBooks.Count / numberOfPages);
+
+            ViewBag.activePage = activePage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+
+            allBooks = allBooks.Skip((activePage - 1) * (int)divisor).Take((int)divisor).ToList();
+
             return View(foundBooks);
         }
 

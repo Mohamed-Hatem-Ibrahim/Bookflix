@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "List of Movies";
+    var numOfPages = (int)ViewBag.NumberOfPages;
+    var activePage = (int)ViewBag.activePage;
     var categories = (List<SelectListItem>)ViewBag.categories;
     var booktypes = (List<SelectListItem>)ViewBag.booktypes;
     var covertypes = (List<SelectListItem>)ViewBag.covertypes;
@@ -138,18 +140,29 @@
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item @(activePage == 1 ?  "disabled": string.Empty) ">
+                <a class="page-link" asp-action="Index" asp-route-activePage="@(activePage-1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             @* should loop this*@
-            
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+            @for (int i = 1; i <= numOfPages; ++i)
+            {
+                if (i == activePage)
+                {
+                    <li class="page-item active" asp-action="Index" asp-route-activePage="@i">
+                        <a class="page-link">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-activePage="@i">@i</a>
+                    </li>
+                }
+            }
+            <li class="page-item @(activePage == numOfPages ?  "disabled": string.Empty)">
+                <a class="page-link" asp-action="Index" asp-route-activePage="@(activePage + 1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
