@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Bookflix.Models;
 using Bookflix.Models.Context;
 using Bookflix.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookflix.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SoldBooksController : Controller
     {
         private readonly SoldBookRepoService _bookSoldRepoService;

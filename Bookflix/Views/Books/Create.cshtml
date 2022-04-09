@@ -62,6 +62,18 @@
                                 <select asp-for="AuthorID" class="form-control" asp-items="ViewBag.AuthorID"></select>
                             </div>
                             <div class="form-group">
+                                <label asp-for="BookType" class="control-label"></label>
+                                <select asp-for="BookType" class="form-control" asp-items="Html.GetEnumSelectList<BookType>()"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublishingType" class="control-label"></label>
+                                <select asp-for="PublishingType" class="form-control" asp-items="Html.GetEnumSelectList<PublishingType>()"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CoverType" class="control-label"></label>
+                                <select asp-for="CoverType" class="form-control" asp-items="Html.GetEnumSelectList<CoverType>()"></select>
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="Categories" class="control-label"></label>
                                 @foreach (var item in categories)
                                 {

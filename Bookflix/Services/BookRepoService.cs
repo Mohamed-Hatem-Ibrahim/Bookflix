@@ -23,15 +23,16 @@ namespace Bookflix.Services
             return Context.Books.Include(a => a.Author).Include(p => p.Publisher).Include(c => c.Categories).Where(b => b.ISBN == _isbn).FirstOrDefault();
         }
 
-        public void Insert(Book? book)
+        public async void Insert(Book? book)
         {
             if (book == null)
                 return;
-            Context.Books.Add(book);
+            await Context.Books.AddAsync(book);
+            //Context.Books.Add(book);
             Context.SaveChanges();
         }
 
-        public void Update(int id, Book? book)
+        public async void Update(int id, Book? book)
         {
             Book? bookUpdated = GetDetails(id);
             if(bookUpdated == null || book == null)
@@ -43,8 +44,11 @@ namespace Bookflix.Services
             bookUpdated.StockNo = book.StockNo;
             bookUpdated.AuthorID = book.AuthorID;
             bookUpdated.PublisherID = book.PublisherID;
+            bookUpdated.BookType = book.BookType;
+            bookUpdated.PublishingType = book.PublishingType;
+            bookUpdated.CoverType = book.CoverType;
 
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
 
         public void Delete(int id)
