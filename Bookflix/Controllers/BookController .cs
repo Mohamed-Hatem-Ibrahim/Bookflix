@@ -46,15 +46,12 @@ namespace Bookflix.Controllers
             }
             return values;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var booktypes = GetEnumValues(typeof(BookType));
-
             var covertypes = GetEnumValues(typeof(CoverType));
-
             var publishingtypes = GetEnumValues(typeof(PublishingType));
-
             var categories = new List<SelectListItem>();
             foreach (var category in CategoryRepo.GetAll())
             {
@@ -69,6 +66,8 @@ namespace Bookflix.Controllers
             ViewBag.covertypes = covertypes;
             ViewBag.publishingtypes = publishingtypes;
             ViewBag.categories = categories;
+
+            //save number of pages in session
 
 
             return View(BookRepo.GetAll());
