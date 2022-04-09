@@ -33,13 +33,13 @@
                 total += item.Book.Price * item.Amount;
                 <!-- Single Cart Item -->
                 <div class="single-cart-item">
-                    <span  class="product-image">
+                    <span class="product-image">
                         <img src="@("~/img/books-img/"+item.Book.ImageName)" class="cart-thumb" alt="" asp-append-version="true">
                         <!-- Cart Item Desc -->
-                    <div class="cart-item-desc">
+                        <div class="cart-item-desc">
 
                             <a lass="text-danger" asp-controller="Orders" asp-action="RemoveAllAmountOfElement"
-                                asp-route-id="@item.Book.ISBN" asp-route-amount="@item.Amount" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></a>
+                               asp-route-id="@item.Book.ISBN" asp-route-amount="@item.Amount" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></a>
 
                             <span class="badge">@item.Book.Title</span>
                             <h6>@item.Book.Description</h6>
