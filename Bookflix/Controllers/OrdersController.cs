@@ -30,6 +30,64 @@ namespace Bookflix.Controllers
             return View(response);
         }
 
+        public RedirectToActionResult AddItemToShoppingCartCartView(int id)
+        {
+
+            var book = repository.GetDetails(id);
+
+            if (book != null)
+            {
+                utility.AddItemToCart(book);
+
+            }
+            return RedirectToAction("ShoppingCart");
+
+        }
+
+        public RedirectToActionResult RemoveItemFromShoppingCartCartView(int id)
+        {
+
+            var book = repository.GetDetails(id);
+
+            if (book != null)
+            {
+                utility.RemoveItemFromCart(book);
+            }
+            return RedirectToAction("ShoppingCart");
+
+        }
+
+        public RedirectToActionResult AddItemToShoppingCartHome(int id)
+        {
+
+            var book = repository.GetDetails(id);
+
+            if (book != null)
+            {
+                utility.AddItemToCart(book);
+
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+
+        }
+
+        public RedirectToActionResult RemoveItemFromShoppingCartHome(int id)
+        {
+
+            var book = repository.GetDetails(id);
+
+            if (book != null)
+            {
+                utility.RemoveItemFromCart(book);
+            }
+            return RedirectToAction(nameof(HomeController.Index), "Index");
+
+        }
+
+
+
+
         public RedirectToActionResult AddItemToShoppingCart(int id)
         {
             var book = repository.GetDetails(id);
@@ -39,7 +97,7 @@ namespace Bookflix.Controllers
                 utility.AddItemToCart(book);
 
             }
-            return RedirectToAction(nameof(ShoppingCart));
+            return RedirectToAction(nameof(BookController.Index),"Book");
         }
 
         public RedirectToActionResult RemoveAllAmountOfElement(int id,int amount)
@@ -49,7 +107,7 @@ namespace Bookflix.Controllers
                 RemoveItemFromShoppingCart(id);
             }
 
-            return RedirectToAction(nameof(ShoppingCart));
+            return RedirectToAction(nameof(BookController.Index), "Book");
         }
         public RedirectToActionResult RemoveItemFromShoppingCart(int id)
         {
@@ -59,7 +117,7 @@ namespace Bookflix.Controllers
             {
                 utility.RemoveItemFromCart(book);
             }
-            return RedirectToAction(nameof(ShoppingCart));
+            return RedirectToAction(nameof(BookController.Index), "Book");
         }
 
 
