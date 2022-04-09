@@ -20,7 +20,6 @@
                         <div class="card-header btn" id="headingOne"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <h5 class="mb-0">
                                     Book Type
-                                </button>
                             </h5>
                         </div>
 
@@ -102,7 +101,7 @@
                 </div>
                 <div>
                     <input type="submit" value="Apply Filers" class="btn btn-secondary btn-block mybtnhatem mt-1" />
-                    <input type="submit" value="Reset Filters" class="btn btn-secondary btn-block" />
+                    <a value="Reset Filters" class="btn btn-secondary btn-block" asp-route-categories="" asp-route-publishingtypes="" asp-route-covertypes="" asp-route-booktypes="" asp-route-search="">Reset Filters</a>
                 </div>
             </form>
         </div>
@@ -124,7 +123,7 @@
                             <span style="top: -0.5em; position:relative; font-size: 15px;">EGP</span>
                             <span>@item.Price</span>
                         </h5>
-                        <span style="font-size:16px">@item.Title</span>
+                        <span style="font-size:16px"><b>@item.Title</b></span>
                         <br>
                         <span class="book-card-description" style="font-size:16px;">
                             @item.Description
