@@ -36,6 +36,7 @@ namespace Bookflix.Services.Orders
             {
                 UserId = userId,
                 Email = userEmailAddress,
+                OrderDate = DateTime.Now
 
             };
             _dbContext.Orders.Add(order);

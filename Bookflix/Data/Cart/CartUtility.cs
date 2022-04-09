@@ -34,7 +34,10 @@ namespace Bookflix.Data.Cart
         //serialize
         private void PutShopingCart(ShoppingCart shoppingCart)
         {
-            var cartJSON = JsonConvert.SerializeObject(shoppingCart);
+            var cartJSON = JsonConvert.SerializeObject(shoppingCart, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
             _session.HttpContext.Session.SetString("Cart", cartJSON);
         }
 
