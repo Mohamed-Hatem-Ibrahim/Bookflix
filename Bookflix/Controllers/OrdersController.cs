@@ -42,6 +42,15 @@ namespace Bookflix.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+        public RedirectToActionResult RemoveAllAmountOfElement(int id,int amount)
+        {
+            for(int i = 0; i < amount; i++)
+            {
+                RemoveItemFromShoppingCart(id);
+            }
+
+            return RedirectToAction(nameof(ShoppingCart));
+        }
         public RedirectToActionResult RemoveItemFromShoppingCart(int id)
         {
             var book = repository.GetDetails(id);
